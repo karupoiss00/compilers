@@ -13,6 +13,8 @@ public:
 	std::optional<std::string> GetValue() const;
 
 	std::string ToString() const;
+
+	bool operator==(Token const& rhs) const;
 private:
 	std::string TokenTypeToString() const;
 

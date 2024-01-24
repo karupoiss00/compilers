@@ -39,6 +39,12 @@ std::string Token::TokenTypeToString() const
 	}
 }
 
+bool Token::operator==(Token const& rhs) const
+{
+	return this->GetType() == rhs.GetType()
+		&& this->GetValue() == rhs.GetValue();
+}
+
 std::string Token::ToString() const
 {
 	auto value = m_value.has_value() ? *m_value : "";

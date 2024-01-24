@@ -36,7 +36,7 @@ void Lexer::TokenizeOperator()
 {
 	char currentChar = Peek();
 	auto operatorToken = Syntax::GetOperatorToken(currentChar);
-	
+
 	AddToken(operatorToken);
 	Next();
 }
@@ -53,7 +53,6 @@ void Lexer::TokenizeNumber()
 	}
 
 	AddToken(TokenType::NUMBER, value);
-	Next();
 }
 
 void Lexer::AddToken(TokenType type, std::optional<std::string> value)

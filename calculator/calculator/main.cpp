@@ -2,12 +2,15 @@
 #include <string>
 #include "TokenType.h"
 #include "Lexer.h"
+#include "Parser.h"
 
 using namespace std;
 
 int main() 
 {
-	string expression = "1 + 2 - 3 / 10 * 23 + 1";
+	string expression;
+
+	getline(cin, expression);
 
 	Lexer lexer(expression);
 
@@ -18,5 +21,20 @@ int main()
 		cout << token.ToString() << endl;
 	}
 
+	Parser parser(tokens);
+	try
+	{
+		vector<IExpressionPtr> expressions = parser.Parse();
+
+		for (auto& expr : expressions)
+		{
+			cout << expr->Eval() << endl;
+		}
+	}
+	catch (exception const& e)
+	{
+		cout << e.what() << endl;
+	}
+	
 	return 0;
 }
