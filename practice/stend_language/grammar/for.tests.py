@@ -4,7 +4,7 @@ from lexer.temp_token_provider import set_tokens
 for_tests = [
 ('''
 FOR 
-    i := 5 to 10 do k=k+1 
+    i := 5 to 10 do k:=k+1 
 ROF''', True),
 
 ('''
