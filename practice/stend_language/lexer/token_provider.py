@@ -19,3 +19,7 @@ def read_token() -> str:
     if next_token is None:
         next_token = get_token()
     return next_token
+
+def clear_next_token():
+    global next_token
+    next_token = None
