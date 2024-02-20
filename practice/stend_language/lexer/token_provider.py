@@ -1,5 +1,4 @@
 from typing import Optional
-from lexer.lexer import get_token
 
 next_token: Optional[str] = None
 
