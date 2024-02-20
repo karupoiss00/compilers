@@ -1,4 +1,5 @@
-from practice.stend_language.lexer.token_provider import pop_token, read_token
+from grammar.identifier import identifier
+from lexer.token_provider import read_token, pop_token
 
 def read_statement() -> bool:
     """<READ STATEMENT> -> <READLINE> | <READ>"""
@@ -6,8 +7,14 @@ def read_statement() -> bool:
 
 def readline() -> bool:
     """<READLINE> -> ReadLine(<IDENTIFIER>)"""
-    return pop_token() == "READLINE"
+    try:
+        return read_token() == "READLINE" and pop_token() and pop_token() == "(" and identifier() and pop_token() == ")"
+    except Exception:
+        return False
 
 def read() -> bool:
     """<READ> -> Read(<IDENTIFIER>)"""
-    return pop_token() == "READ"
+    try:
+        return read_token() == "READ" and pop_token() and pop_token() == "(" and identifier() and pop_token() == ")"
+    except Exception:
+        return False

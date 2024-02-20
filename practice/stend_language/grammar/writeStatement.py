@@ -1,4 +1,5 @@
-from practice.stend_language.lexer.token_provider import pop_token
+from grammar.identifier import identifier
+from lexer.token_provider import pop_token, read_token
 
 def write_statement() -> bool:
     """<WRITE STATEMENT> -> <WRITELINE> | <WRITE>"""
@@ -6,8 +7,14 @@ def write_statement() -> bool:
 
 def writeline() -> bool:
     """<WRITELINE> -> WriteLine(<IDENTIFIER>)"""
-    return pop_token() == "WRITELINE"
+    try:
+        return read_token() == "WRITELINE" and pop_token() and pop_token() == "(" and identifier() and pop_token() == ")"
+    except Exception:
+        return False
 
 def write() -> bool:
     """<WRITE> -> Write(<IDENTIFIER>)"""
-    return pop_token() == "WRITE"
+    try:
+        return read_token() == "WRITE" and pop_token() and pop_token() == "(" and identifier() and pop_token() == ")"
+    except Exception:
+        return False
