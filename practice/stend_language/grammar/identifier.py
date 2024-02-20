@@ -1,7 +1,7 @@
-from lexer.token_provider import pop_token
+from lexer.token_provider import  read_token
 
 
 def identifier() -> bool:
     ''' <IDENTIFIER> -> id '''
     # TODO: Определить лексему id
-    return pop_token() == 'id'
+    return read_token() == 'id'

@@ -37,7 +37,7 @@ def list_section_const_postfix() -> bool:
 
 def section_const() -> bool:
     """<SECTION CONST> -> <TYPE> <IDENTIFIER> := <EXPRESSION>"""
-    return type_() and identifier() and pop_token() == ":=" and expression()
+    return type_() and identifier() and pop_token() and pop_token() == ":=" and expression()
 
 
 def list_var() -> bool:
@@ -68,7 +68,7 @@ def section_var_postfix() -> bool:
 
 def identifier_list() -> bool:
     """<IDENTIFIER LIST> -> <IDENTIFIER> | <IDENTIFIER>, <IDENTIFIER LIST>"""
-    return identifier() and identifier_list_postfix()
+    return identifier() and pop_token() and identifier_list_postfix()
 
 
 def identifier_list_postfix() -> bool:

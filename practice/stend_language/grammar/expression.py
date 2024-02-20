@@ -76,6 +76,7 @@ def factor() -> bool:
             pop_token()
             return factor()
         if identifier():
+            pop_token()
             return True
         return False
     except Exception:

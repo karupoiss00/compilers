@@ -3,7 +3,6 @@ from lexer.lexer import get_token
 
 next_token: Optional[str] = None
 
-
 def pop_token() -> str:
     global next_token
     if next_token:
