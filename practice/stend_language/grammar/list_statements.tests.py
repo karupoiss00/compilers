@@ -50,6 +50,26 @@ statement_tests = [
     EL
     \0
     ''', True), #13
+    ('''
+    WRITE ( id + 1 )
+    \0
+    ''', True), #14
+    ('''
+    WRITELINE ( id + 1 )
+    \0
+    ''', True), #15
+    ('''
+    READ ( id )
+    \0
+    ''', True), #16
+    ('''
+    READLINE ( id )
+    \0
+    ''', True), #17
+    ('''
+    READLINE ( id + 1 )
+    \0
+    ''', False), #18
 ]
 
 for test_id, test_data in enumerate(statement_tests):

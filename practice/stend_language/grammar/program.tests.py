@@ -52,12 +52,16 @@ RAV
         WHILE id < 5
         DO
             id := id + 1 ;
+            READLINE ( id ) ;
             WHILE id < 5
             DO
                 id := id + 1
             EL
         EL
-    FI
+    FI;
+    
+    WRITELINE ( id + 1 );
+    WRITE ( id + 2 )
 } 
 FINISH
 ''', True),

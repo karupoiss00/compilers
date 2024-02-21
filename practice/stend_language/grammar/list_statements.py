@@ -28,6 +28,8 @@ def statement() -> bool:
         or for_statement()
         or while_statement()
         or if_statement()
+        or write_statement()
+        or read_statement()
     )
 
 def empty_statement() -> bool:
@@ -92,5 +94,38 @@ def while_statement() -> bool:
         and pop_token() == "EL"
     )
 
+def read_statement() -> bool:
+    """<READ STATEMENT> -> <READLINE> | <READ>"""
+    return readline() or read()
 
+def readline() -> bool:
+    """<READLINE> -> ReadLine(<IDENTIFIER>)"""
+    try:
+        return read_token() == "READLINE" and pop_token() and pop_token() == "(" and identifier() and pop_token() and pop_token() == ")"
+    except Exception:
+        return False
 
+def read() -> bool:
+    """<READ> -> Read(<IDENTIFIER>)"""
+    try:
+        return read_token() == "READ" and pop_token() and pop_token() == "(" and identifier() and pop_token() and pop_token() == ")"
+    except Exception:
+        return False
+
+def write_statement() -> bool:
+    """<WRITE STATEMENT> -> <WRITELINE> | <WRITE>"""
+    return writeline() or write()
+
+def writeline() -> bool:
+    """<WRITELINE> -> WriteLine(<IDENTIFIER>)"""
+    try:
+        return read_token() == "WRITELINE" and pop_token() and pop_token() == "(" and expression() and pop_token() == ")"
+    except Exception:
+        return False
+
+def write() -> bool:
+    """<WRITE> -> Write(<IDENTIFIER>)"""
+    try:
+        return read_token() == "WRITE" and pop_token() and pop_token() == "(" and expression() and pop_token() == ")"
+    except Exception:
+        return False
