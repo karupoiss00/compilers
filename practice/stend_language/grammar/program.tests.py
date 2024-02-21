@@ -4,14 +4,52 @@ from lexer.temp_token_provider import set_tokens
 tests = [
     ('''
 START 
+CONST 
+    String id := 123 ; 
+    Int id := 123 ; 
+    Float id := 1.23 ;
+    Boolean id := 1.24 ;
+    Char id := 123
+NOC
 VAR
     Int id := 123 
 RAV 
 { 
     FOR id := 5 TO 10 
     DO 
-        id := 1
-    ROF
+        id := 1 ;
+        IF id > 0 THEN 
+            id := 10 
+        ELSE 
+            id := 0 
+        FI
+    ROF ; 
+    id := 1 ; 
+    ; ;
+    IF id > 0 
+    THEN 
+        id := 10 ;
+        FOR id := 5 TO 10 
+        DO 
+            id := 1 ;
+            IF id > 0 THEN 
+                id := 10 
+            ELSE 
+                id := 0 
+            FI
+        ROF 
+    ELSE 
+        id := 0 ; 
+        FOR id := 5 TO 10 
+        DO 
+            id := 1 ;
+            IF id > 0 THEN 
+                id := 10 
+            ELSE 
+                id := 0 
+            FI
+        ROF 
+    FI
 } 
 FINISH
 ''', True),

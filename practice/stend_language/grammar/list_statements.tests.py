@@ -28,7 +28,17 @@ statement_tests = [
     FOR
         i = 5 to 10 do k=k+1 \0
     ''', False), #10
-    (' \0', False) #11
+    (' \0', False), #11
+    ('''
+    IF id > 0 
+    THEN 
+        id := 10 
+    ELSE 
+        id := 0 
+    FI ;
+    id := 1 ;
+    ; \0
+    ''', True), #3
 ]
 
 for test_id, test_data in enumerate(statement_tests):
