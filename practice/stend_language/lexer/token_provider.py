@@ -19,6 +19,3 @@ def read_token() -> str:
     if next_token is None:
         next_token = get_token()
     return next_token
-
-# написал артем
-
