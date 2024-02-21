@@ -37,8 +37,19 @@ statement_tests = [
         id := 0 
     FI ;
     id := 1 ;
-    ; \0
-    ''', True), #3
+    ; ;
+    WHILE id < 5 
+    DO
+        id := id + 1
+    EL \0
+    ''', True), #12
+    ('''
+    WHILE id < 5
+    DO
+        id := id + 1
+    EL
+    \0
+    ''', True), #13
 ]
 
 for test_id, test_data in enumerate(statement_tests):

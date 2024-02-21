@@ -22,7 +22,13 @@ def list_statements() -> bool:
 
 def statement() -> bool:
     """<STATEMENT> -> <EMPTY STATEMENT> | <ASSIGNMENT STATEMENT> | <IF STATEMENT>"""
-    return empty_statement() or assignment_statement() or for_statement() or if_statement()
+    return (
+        empty_statement()
+        or assignment_statement()
+        or for_statement()
+        or while_statement()
+        or if_statement()
+    )
 
 def empty_statement() -> bool:
     """<EMPTY STATEMENT> -> ;"""
@@ -71,6 +77,19 @@ def for_statement() -> bool:
             and pop_token() == "DO"
             and list_statements()
             and pop_token() == "ROF"
+    )
+
+def while_statement() -> bool:
+    """<WHILE STATEMENT> -> WHILE <EXPRESSION> do <LIST STATEMENTS> el"""
+
+    return (
+        read_token() == "WHILE"
+        and pop_token()
+        and expression()
+        and read_token() == "DO"
+        and pop_token()
+        and list_statements()
+        and pop_token() == "EL"
     )
 
 

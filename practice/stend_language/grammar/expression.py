@@ -25,7 +25,7 @@ def simple_expression() -> bool:
     # <SIMPLE EXPRESSION> -> <TERM><PLUS><SIMPLE EXPRESSION> | <TERM>
     try:
         if term():
-            if plus():
+            if addition():
                 pop_token()
                 return simple_expression()
             return True
@@ -33,10 +33,10 @@ def simple_expression() -> bool:
     except Exception:
         return False
 
-def plus() -> bool:
+def addition() -> bool:
     # <PLUS> -> + | or
     try:
-        return read_token() in ["+", "or"]
+        return read_token() in ["+", "-", "or"]
     except Exception:
         return False
 

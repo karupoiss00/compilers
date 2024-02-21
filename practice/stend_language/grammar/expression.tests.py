@@ -9,6 +9,7 @@ tests = [
     ('''id = 5 + 6''', True),
     ('''id = ( 5 * 5 div 5 ) >= 5''', True),
     ('''id = 9 or not ( id * 10 )''', True),
+    ('''id - 6''', True),
     ('''id''', True),
     ('''9.5''', True),
     ('''id = ( 5 * 6''', False),

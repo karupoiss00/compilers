@@ -48,7 +48,15 @@ RAV
             ELSE 
                 id := 0 
             FI
-        ROF 
+        ROF; 
+        WHILE id < 5
+        DO
+            id := id + 1 ;
+            WHILE id < 5
+            DO
+                id := id + 1
+            EL
+        EL
     FI
 } 
 FINISH
