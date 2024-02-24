@@ -1,4 +1,4 @@
-from grammar.program import program
+from parser.program import program
 from lexer.temp_token_provider import set_tokens
 
 tests = [
