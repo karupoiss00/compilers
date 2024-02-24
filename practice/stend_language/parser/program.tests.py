@@ -1,4 +1,4 @@
-from grammar.program import program
+from parser.program import program
 from lexer.temp_token_provider import set_tokens
 
 tests = [
@@ -15,6 +15,7 @@ VAR
     Int id := 123 
 RAV 
 { 
+    READ ( id ) ;
     FOR id := 5 TO 10 
     DO 
         id := 1 ;
