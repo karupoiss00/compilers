@@ -1,5 +1,5 @@
 from lexer.token_provider import pop_token
-from parser.declarations import declarations
+from parser.declarations.declarations import declarations
 from parser.list_statements import list_statements
 
 def program() -> bool:
