@@ -70,6 +70,13 @@ statement_tests = [
     READLINE ( id + 1 )
     \0
     ''', False), #18
+    ('''
+       WHILE id < 5
+       DO
+           [ id := id + 1 ]
+       EL
+       \0
+   ''', True),  # 13
 ]
 
 for test_id, test_data in enumerate(statement_tests):

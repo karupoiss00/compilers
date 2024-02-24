@@ -22,6 +22,7 @@ def list_statements() -> bool:
 
 def statement() -> bool:
     """<STATEMENT> -> <EMPTY STATEMENT> | <ASSIGNMENT STATEMENT> | <IF STATEMENT>"""
+    """TODO поддержать в [ <LIST STATEMENT> ]"""
     return (
         empty_statement()
         or assignment_statement()
@@ -63,7 +64,7 @@ def optional_else() -> bool:
     return True
 
 def for_statement() -> bool:
-    """<FOR STATEMENT> -> for <IDENTIFIER> := <NUMBER> to <NUMBER> do <EXPRESSION> rof"""
+    """<FOR STATEMENT> -> for <IDENTIFIER> := <NUMBER> to <NUMBER> do <LIST STATEMENTS> rof"""
 
     return (
             read_token() == "FOR"

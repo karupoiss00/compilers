@@ -15,6 +15,7 @@ VAR
     Int id := 123 
 RAV 
 { 
+    READ ( id ) ;
     FOR id := 5 TO 10 
     DO 
         id := 1 ;

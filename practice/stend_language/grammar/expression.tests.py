@@ -18,7 +18,8 @@ tests = [
     ('''5.''', False),
     ('''5.0''', True),
     ('''0''', True),
-    ("id =", False)
+    ("id =", False),
+    ('''- ( id + 12.5 * - 5 * - ( - id * - id + - id ) )''', True)
 ]
 
 for test_id, test_data in enumerate(tests):
