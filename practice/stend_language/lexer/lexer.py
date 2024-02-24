@@ -1,5 +1,6 @@
-from lexer.temp_token_provider import get_token as get_token_from_temp_token_provider
 import re
+import io
+
 
 START = 0
 FINISH = 1
@@ -24,24 +25,35 @@ DO = 19
 EL = 20
 FOR = 21
 TO = 22
-DO = 23
-ROF = 24
-OR = 25
-ASSIGN = 26
-SEMICOLON = 27
-IDENTIFIER = 28
-FLOAT = 29
-NUMBER = 30
-STRING = 31
-CHAR = 32
-LPAREN = 33
-RPAREN = 34
-LBRACKET = 35
-RBRACKET = 36
-STAR = 37
-PLUS = 38
-MINUS = 39
-SLASH = 40
+ROF = 23
+OR = 24
+ASSIGN = 25
+SEMICOLON = 26
+IDENTIFIER = 27
+FLOAT = 28
+NUMBER = 29
+STRING = 30
+CHAR = 31
+LPAREN = 32
+RPAREN = 33
+LBRACKET = 34
+RBRACKET = 35
+STAR = 36
+PLUS = 37
+MINUS = 38
+SLASH = 39
+LBRACE = 40
+RBRACE = 41
+GREATER_THAN = 42
+GREATER_OR_EQUAL_THAN = 43
+LESS_THAN = 44
+LESS_OR_EQUAL_THAN = 45
+WRITE = 46
+WRITELINE = 47
+READ = 48
+READLINE = 49
+
+CASE_SENSITIVE_LEXEMS = [WRITE, WRITELINE, READ, READLINE, STRING_TYPE, INT_TYPE, FLOAT_TYPE, BOOLEAN_TYPE, CHAR_TYPE]
 
 LEXEMS = [
     ['START', r'^\bSTART\b', START],
@@ -50,61 +62,109 @@ LEXEMS = [
     ['NOC', r'^\bNOC\b', NOC],
     ['VAR', r'^\bVAR\b', VAR],
     ['RAV', r'^\bRAV\b', RAV],
-    ['String', r'^\bString\b', STRING_TYPE],
-    ['Int', r'^\bInt\b', INT_TYPE],
-    ['Float', r'^\bFloat\b', FLOAT_TYPE],
-    ['Boolean', r'^\bBoolean\b', BOOLEAN_TYPE],
-    ['Char', r'^\bChar\b', CHAR],
-    ['div', r'^\bdiv\b', DIV],
-    ['mod', r'^\bmod\b', MOD],
-    ['not', r'^\bnot\b', NOT],
-    ['if', r'^\bif\b', IF],
-    ['then', r'^\bthen\b', THEN],
-    ['fi', r'^\bfi\b', FI],
-    ['else', r'^\belse\b', ELSE],
-    ['while', r'^\bwhile\b', WHILE],
-    ['do', r'^\bdo\b', DO],
-    ['el', r'^\bel\b', EL],
-    ['for', r'^\bfor\b', FOR],
-    ['to', r'^\bto\b', TO],
-    ['do', r'^\bdo\b', DO],
-    ['rof', r'^\brof\b', ROF],
-    ['or', r'^\bor\b', OR],
+    ['STRING_TYPE', r'^\bString\b', STRING_TYPE],
+    ['INT_TYPE', r'^\bInt\b', INT_TYPE],
+    ['FLOAT_TYPE', r'^\bFloat\b', FLOAT_TYPE],
+    ['BOOLEAN_TYPE', r'^\bBoolean\b', BOOLEAN_TYPE],
+    ['CHAR_TYPE', r'^\bChar\b', CHAR_TYPE],
+    ['WRITE', r'^\bWRITE\b', WRITE],
+    ['WRITELINE', r'^\bWRITELINE\b', WRITELINE],
+    ['READ', r'^\bREAD\b', READ],
+    ['READLINE', r'^\bREADLINE\b', READLINE],
+    ['DIV', r'^\bdiv\b', DIV],
+    ['MOD', r'^\bmod\b', MOD],
+    ['NOT', r'^\bnot\b', NOT],
+    ['IF', r'^\bif\b', IF],
+    ['THEN', r'^\bthen\b', THEN],
+    ['FI', r'^\bfi\b', FI],
+    ['ELSE', r'^\belse\b', ELSE],
+    ['WHILE', r'^\bwhile\b', WHILE],
+    ['DO', r'^\bdo\b', DO],
+    ['EL', r'^\bel\b', EL],
+    ['FOR', r'^\bfor\b', FOR],
+    ['TO', r'^\bto\b', TO],
+    ['DO', r'^\bdo\b', DO],
+    ['ROF', r'^\brof\b', ROF],
+    ['OR', r'^\bor\b', OR],
     [':=', r'^:=', ASSIGN],
     [';', r'^;', SEMICOLON],
-    ['identifier', r'^\b[a-zA-Z_]+\b', IDENTIFIER],
-    ['float', r'^\d+\.\d+', FLOAT],
-    ['number', r'^\d+', NUMBER],
-    ['string', r'^\".*\"', STRING],
-    ['char', r'^\'.*\'', CHAR],
+    ['IDENTIFIER', r'^\b[a-zA-Z_]+\b', IDENTIFIER],
+    ['FLOAT_VALUE', r'^\d+\.\d+', FLOAT],
+    ['INT_VALUE', r'^\d+', NUMBER],
+    ['STRING_VALUE', r'^\".*\"', STRING],
+    ['CHAR_VALUE', r'^\'.*\'', CHAR],
     ['(', r'^\(', LPAREN],
     [')', r'^\)', RPAREN],
     ['[', r'^\[', LBRACKET],
     [']', r'^\]', RBRACKET],
+    ['{', r'^\{', LBRACE],
+    ['}', r'^\}', RBRACE],
     ['*', r'^\*', STAR],
     ['+', r'^\+', PLUS],
     ['-', r'^\-', MINUS],
-    ['/', r'^\/', SLASH]
+    ['/', r'^\/', SLASH],
+    ['>', r'^\>', GREATER_THAN],
+    ['<', r'^\<', LESS_THAN],
+    ['>=', r'^\>=', GREATER_OR_EQUAL_THAN],
+    ['<=', r'^\<=', LESS_OR_EQUAL_THAN]
 ]
 
 
-with open('input.txt', 'r') as f:
-    lines = f.readlines()
+class NoNextTokenException(Exception):
+    pass
+
+
+class Token:
+    def __init__(self, identifier: int, name: str, value: str):
+        self.id = identifier
+        self.name = name
+        self.value = value
+
+
+tokens = []
+position = 0
+
+
+def tokenize(text):
+    global tokens
+    global position
+
+    position = 0
+    tokens = []
+
+    buf = io.StringIO(text)
+    lines = buf.readlines()
     for line in lines:
         while line:
             line = line.strip()
             for lexem in LEXEMS:
-                result = re.search(lexem[1], line)
-                if not result: continue
+                flags = 0 if lexem[2] in CASE_SENSITIVE_LEXEMS else re.I
+                result = re.search(lexem[1], line, flags)
+
+                if not result:
+                    continue
+
+                identifier = lexem[2]
+                name = lexem[0].ljust(16).strip()
+                value = result.group().ljust(8).strip()
+                token = Token(identifier, name, value)
+                tokens.append(token)
+
                 line = line[result.end():]
-                print(f'{result.group().ljust(8)} {lexem[0].ljust(16)} {lexem[2]}')
                 break
             else:
                 break
         if len(line) != 0:
             raise Exception(f"Error, can't parse: {line}")
 
+def get_token() -> Token:
+    global position
+    if position < len(tokens):
+        token = tokens[position]
+        position += 1
+        return token
+    else:
+        raise NoNextTokenException
 
-
-def get_token() -> str:
-    return get_token_from_temp_token_provider()
+def get_tokens_count() -> int:
+    return len(tokens)
