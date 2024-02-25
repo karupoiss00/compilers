@@ -1,24 +1,24 @@
 from declarations import declarations
 from lexer.temp_token_provider import set_tokens
-
+from lexer.token_provider import clear_next_token
 
 tests = [
 ('''
 CONST 
-    String id := "test" ; 
-    Int id := '123' ; 
+    String id := 123 ; 
+    Int id := 123 ; 
     Float id := 1.23 ;
     Boolean id := 1.24 ;
-    Char id := 'a'
+    Char id := 123
 NOC 
 VAR 
-    String id := "test"
+    String id := 123
 RAV''', True),
 
 
 ('''
 VAR 
-    String id := "test"'
+    String id := 123    
 RAV''', True),
 
 
@@ -36,11 +36,11 @@ RAV''', True),
 
 ('''
 CONST
-    Char id := 'a' ;
-    String id := "test"
+    Char id := 432 ;
+    String id := 234
 NOC
 VAR 
-    String id , id , id := "TEST"
+    String id , id , id := 345
 RAV''', True),
 
 ('''
@@ -85,6 +85,7 @@ NOC''', False),
 ]
 
 for test_id, test_data in enumerate(tests):
+    clear_next_token()
     test, expected_result = test_data
     tokens = test.split()
     set_tokens(tokens)

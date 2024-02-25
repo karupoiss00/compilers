@@ -1,10 +1,13 @@
 from typing import Optional
-from lexer.lexer import get_token
+from lexer.lexer import get_token, tokenize, Token
 
-next_token: Optional[str] = None
+next_token: Optional[Token] = None
+
+def generate_tokens(text: str):
+    tokenize(text)
 
 
-def pop_token() -> str:
+def pop_token() -> Token:
     global next_token
     if next_token:
         token = next_token
@@ -14,8 +17,12 @@ def pop_token() -> str:
     return get_token()
 
 
-def read_token() -> str:
+def read_token() -> Token:
     global next_token
     if next_token is None:
         next_token = get_token()
     return next_token
+
+def clear_next_token():
+    global next_token
+    next_token = None
