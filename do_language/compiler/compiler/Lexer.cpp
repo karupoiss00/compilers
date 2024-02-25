@@ -60,38 +60,40 @@ Lexer::Lexer(std::string input)
 
 std::vector<Token> Lexer::Tokenize()
 {
-	bool unknownTokenEncountered = false;
-
-	while (!m_input.empty() && !unknownTokenEncountered)
+	while (!m_input.empty())
 	{
-		unknownTokenEncountered = true;
+		m_input = strip(m_input);
 
-		for (auto [tokenType, tokenRegex] : TOKEN_TYPE_TO_REGEX_MAP)
+		auto token = ParseNextToken();
+
+		if (!token)
 		{
-			m_input = strip(m_input);
-			const std::regex regExp(tokenRegex, std::regex_constants::icase);
-			std::smatch matches;
-
-			if (!std::regex_search(m_input, matches, regExp))
-			{
-				continue;
-			}
-
-			auto tokenValue = matches[0];
-
-			AddToken(tokenType, tokenValue);
-
-			m_input = m_input.substr(tokenValue.length());
-			unknownTokenEncountered = false;
 			break;
 		}
+
+		m_tokens.push_back(*token);
+
+		m_input = m_input.substr((*token).GetValue().length());
 	}
 
 	return m_tokens;
 }
 
-void Lexer::AddToken(TokenType type, std::optional<std::string> value)
+std::optional<Token> Lexer::ParseNextToken()
 {
-	Token token(type, value);
-	m_tokens.push_back(token);
+	for (auto [tokenType, pattern] : TOKEN_TYPE_TO_REGEX_MAP)
+	{
+		const std::regex regExp(pattern, std::regex_constants::icase);
+		std::smatch matches;
+		bool tokenFound = std::regex_search(m_input, matches, regExp);
+		
+		if (tokenFound)
+		{
+			auto tokenValue = matches[0];
+
+			return Token(tokenType, tokenValue);
+		}
+	}
+
+	return std::nullopt;
 }

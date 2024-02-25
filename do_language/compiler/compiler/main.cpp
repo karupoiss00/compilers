@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
 
 	for (auto token : lexer.Tokenize())
 	{
-		cout << token.ToString() << " ";
+		cout << token.ToString() << " " << endl;
 	}
 
 	return 0;

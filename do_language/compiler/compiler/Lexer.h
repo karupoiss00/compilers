@@ -1,4 +1,5 @@
 #pragma once
+#include <optional>
 #include "ILexer.h"
 
 class Lexer : public ILexer
@@ -9,7 +10,7 @@ public:
 	std::vector<Token> Tokenize() override;
 
 private:
-	void AddToken(TokenType type, std::optional<std::string> value = std::nullopt);
+	std::optional<Token> ParseNextToken();
 
 	std::string m_input;
 	std::vector<Token> m_tokens;

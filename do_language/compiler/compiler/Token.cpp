@@ -1,7 +1,7 @@
 #include <format>
 #include "Token.h"
 
-Token::Token(TokenType type, std::optional<std::string> value)
+Token::Token(TokenType type, std::string value)
 	: m_type(type)
 	, m_value(move(value))
 {
@@ -12,7 +12,7 @@ TokenType Token::GetType() const
 	return m_type;
 }
 
-std::optional<std::string> Token::GetValue() const
+std::string Token::GetValue() const
 {
 	return m_value;
 }
@@ -38,6 +38,5 @@ bool Token::operator==(Token const& rhs) const
 
 std::string Token::ToString() const
 {
-	auto value = m_value.has_value() ? *m_value : "";
-	return std::format(R"({} {})", TokenTypeToString(), value);
+	return std::format(R"({} {})", TokenTypeToString(), m_value);
 }
