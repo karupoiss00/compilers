@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="lexer">
+      <UniqueIdentifier>{0398133f-36cd-4465-9fe4-7d059db97be9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lexer\token">
+      <UniqueIdentifier>{9d64a4e2-cdd5-42fd-91f6-7be8aeb46fb7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Token.cpp">
+      <Filter>lexer\token</Filter>
+    </ClCompile>
+    <ClCompile Include="Lexer.cpp">
+      <Filter>lexer</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ILexer.h">
+      <Filter>lexer</Filter>
+    </ClInclude>
+    <ClInclude Include="Token.h">
+      <Filter>lexer\token</Filter>
+    </ClInclude>
+    <ClInclude Include="TokenType.h">
+      <Filter>lexer\token</Filter>
+    </ClInclude>
+    <ClInclude Include="Lexer.h">
+      <Filter>lexer</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
