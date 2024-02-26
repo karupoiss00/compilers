@@ -19,10 +19,10 @@ def declarations() -> bool:
 def list_const() -> bool:
     """<LIST CONST> -> CONST <LIST SECTION CONST> NOC"""
     return (
-        read_token() == CONST
-        and pop_token()
+        read_token().id == CONST
+        and pop_token().id
         and list_section_const()
-        and pop_token() == NOC
+        and pop_token().id == NOC
     )
 
 
@@ -33,17 +33,17 @@ def list_section_const() -> bool:
 
 def list_section_const_postfix() -> bool:
     """;<LIST SECTION CONST>"""
-    return read_token() == SEMICOLON and pop_token() and list_section_const() or True
+    return read_token().id == SEMICOLON and pop_token().id and list_section_const() or True
 
 
 def section_const() -> bool:
     """<SECTION CONST> -> <TYPE> <IDENTIFIER> := <EXPRESSION>"""
-    return type_() and identifier() and pop_token() and pop_token() == ASSIGN and expression()
+    return type_() and identifier() and pop_token().id and pop_token().id == ASSIGN and expression()
 
 
 def list_var() -> bool:
     """<LIST VAR> -> VAR <LIST SECTION VAR> RAV"""
-    return pop_token() == VAR and list_section_var() and pop_token() == RAV
+    return pop_token().id == VAR and list_section_var() and pop_token().id == RAV
 
 
 def list_section_var() -> bool:
@@ -54,7 +54,7 @@ def list_section_var() -> bool:
 
 def list_section_var_postfix() -> bool:
     """;<LIST SECTION VAR>"""
-    return read_token() == SEMICOLON and pop_token() and list_section_var() or True
+    return read_token().id == SEMICOLON and pop_token().id and list_section_var() or True
 
 
 def section_var() -> bool:
@@ -64,14 +64,14 @@ def section_var() -> bool:
 
 def section_var_postfix() -> bool:
     """:= <EXPRESSION>"""
-    return read_token() == ASSIGN and pop_token() and expression() or True
+    return read_token().id == ASSIGN and pop_token().id and expression() or True
 
 
 def identifier_list() -> bool:
     """<IDENTIFIER LIST> -> <IDENTIFIER> | <IDENTIFIER>, <IDENTIFIER LIST>"""
-    return identifier() and pop_token() and identifier_list_postfix()
+    return identifier() and pop_token().id and identifier_list_postfix()
 
 
 def identifier_list_postfix() -> bool:
     """,<IDENTIFIER LIST>"""
-    return read_token() == COMMA and pop_token() and identifier_list() or True
+    return read_token().id == COMMA and pop_token().id and identifier_list() or True

@@ -3,4 +3,4 @@ from lexer.lexer import IDENTIFIER
 
 def identifier() -> bool:
     ''' <IDENTIFIER> -> id '''
-    return read_token() == IDENTIFIER
+    return read_token().id == IDENTIFIER
