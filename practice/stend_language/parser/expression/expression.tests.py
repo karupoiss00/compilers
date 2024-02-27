@@ -19,7 +19,16 @@ tests = [
     ('''5.0''', True),
     ('''0''', True),
     ("id =", False),
-    ('''- ( id + 12.5 * - 5 * - ( - id * - id + - id ) )''', True)
+    ('''- ( id + 12.5 * - 5 * - ( - id * - id + - id ) )''', True),
+    ('''"str"''', True),
+    ('''"str" + "str"''', True),
+    ('''"str" * "str"''', True),
+    ('''"str" = "str"''', True),
+    ('''false or 5 = 5''', True),
+    ('''true''', True),
+    ('''true and not id = false''', True),
+    ("\'d\'", True),
+    ('''true and not id = \'c\'''', True),
 ]
 
 for test_id, test_data in enumerate(tests):
@@ -28,8 +37,10 @@ for test_id, test_data in enumerate(tests):
     tokens = test.split()
     set_tokens(tokens)
     if expression() == expected_result:
-        print(f'{test_id + 1}:\tOK')
+        print(f'{test_id + 1}:\tOK ---- {test}')
     else:
+        clear_next_token()
         print(f'{test_id + 1}:\tFAIL')
         print(f'\tExpected: {expected_result}')
         print(f'\tGot: {expression()}')
+        print(f'\tTest" {test}')
