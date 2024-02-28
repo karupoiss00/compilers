@@ -28,6 +28,7 @@ def statement() -> bool:
         or assignment_statement()
         or for_statement()
         or while_statement()
+        or do_while_statement()
         or if_statement()
         or write_statement()
         or read_statement()
@@ -92,6 +93,18 @@ def while_statement() -> bool:
         and read_token() == "DO"
         and pop_token()
         and list_statements()
+        and pop_token() == "EL"
+    )
+
+def do_while_statement() -> bool:
+    """<DO WHILE STATEMENT> -> DO <LIST STATEMENTS> WHILE <EXPRESSION> el"""
+    return (
+        read_token() == "DO"
+        and pop_token()
+        and list_statements()
+        and read_token() == "WHILE"
+        and pop_token()
+        and expression()
         and pop_token() == "EL"
     )
 
