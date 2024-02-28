@@ -3,6 +3,7 @@ from lexer.lexer import get_token, tokenize, Token
 
 next_token: Optional[Token] = None
 
+
 def generate_tokens(text: str):
     tokenize(text)
 

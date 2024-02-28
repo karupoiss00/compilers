@@ -52,7 +52,12 @@ WRITE = 46
 WRITELINE = 47
 READ = 48
 READLINE = 49
-COMMA = 50
+AND = 50
+TRUE = 51
+FALSE = 52
+EQUAL = 53
+NOT_EQUAL = 54
+COMMA = 55
 
 CASE_SENSITIVE_LEXEMS = [WRITE, WRITELINE, READ, READLINE, STRING_TYPE, INT_TYPE, FLOAT_TYPE, BOOLEAN_TYPE, CHAR_TYPE]
 
@@ -90,11 +95,13 @@ LEXEMS = [
     ['COMMA', r'^,', COMMA],
     [':=', r'^:=', ASSIGN],
     [';', r'^;', SEMICOLON],
+    ['TRUE', r'^\btrue\b', TRUE],
+    ['FALSE', r'^\bfalse\b', FALSE],
     ['IDENTIFIER', r'^\b[a-zA-Z_]+\b', IDENTIFIER],
     ['FLOAT_VALUE', r'^\d+\.\d+', FLOAT],
     ['INT_VALUE', r'^\d+', NUMBER],
-    ['STRING_VALUE', r'^\".*\"', STRING],
-    ['CHAR_VALUE', r'^\'.*\'', CHAR],
+    ['STRING_VALUE', r'^\"([^"]|"")*\"', STRING],
+    ['CHAR_VALUE', r'^\'([^\']|\'\')*\'', CHAR],
     ['(', r'^\(', LPAREN],
     [')', r'^\)', RPAREN],
     ['[', r'^\[', LBRACKET],
@@ -105,10 +112,13 @@ LEXEMS = [
     ['+', r'^\+', PLUS],
     ['-', r'^\-', MINUS],
     ['/', r'^\/', SLASH],
+    ['>=', r'^\>=', GREATER_OR_EQUAL_THAN],
+    ['<=', r'^\<=', LESS_OR_EQUAL_THAN],
+    ['<>', r'^<>', NOT_EQUAL],
     ['>', r'^\>', GREATER_THAN],
     ['<', r'^\<', LESS_THAN],
-    ['>=', r'^\>=', GREATER_OR_EQUAL_THAN],
-    ['<=', r'^\<=', LESS_OR_EQUAL_THAN]
+    ['AND', r'^\band\b', AND],
+    ['=', r'^\=', EQUAL]
 ]
 
 
@@ -159,6 +169,7 @@ def tokenize(text):
         if len(line) != 0:
             raise Exception(f"Error, can't parse: {line}")
 
+
 def get_token() -> Token:
     global position
     if position < len(tokens):
@@ -167,6 +178,7 @@ def get_token() -> Token:
         return token
     else:
         raise NoNextTokenException
+
 
 def get_tokens_count() -> int:
     return len(tokens)

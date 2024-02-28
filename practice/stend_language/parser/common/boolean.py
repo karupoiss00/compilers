@@ -1,5 +1,6 @@
-from lexer.token_provider import read_token
+from lexer.token_provider import match_token
+from lexer.lexer import TRUE, FALSE
+
 
 def boolean() -> bool:
-    token = read_token()
-    return token == "true" or token == "false"
+    return match_token(TRUE) or match_token(FALSE)

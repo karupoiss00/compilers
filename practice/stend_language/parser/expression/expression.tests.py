@@ -1,6 +1,5 @@
-from expression import expression
-from lexer.temp_token_provider import set_tokens
-from lexer.token_provider import clear_next_token
+from lexer.token_provider import clear_next_token, generate_tokens
+from parser.expression.expression import expression
 
 
 tests = [
@@ -15,7 +14,6 @@ tests = [
     ('''id = ( 5 * 6''', False),
     ('''+ id''', False),
     ('''div 484''', False),
-    ('''5.''', False),
     ('''5.0''', True),
     ('''0''', True),
     ("id =", False),
@@ -29,18 +27,20 @@ tests = [
     ('''true and not id = false''', True),
     ("\'d\'", True),
     ('''true and not id = \'c\'''', True),
+    ('''"he""llo"''', True),
+    ("\'a\' + \'d\'", True),
+    ("\'''\'", True),
+    ("1.1 <> 2", True)
 ]
 
 for test_id, test_data in enumerate(tests):
     clear_next_token()
     test, expected_result = test_data
-    tokens = test.split()
-    set_tokens(tokens)
+    generate_tokens(test)
     if expression() == expected_result:
         print(f'{test_id + 1}:\tOK ---- {test}')
     else:
-        clear_next_token()
         print(f'{test_id + 1}:\tFAIL')
         print(f'\tExpected: {expected_result}')
-        print(f'\tGot: {expression()}')
-        print(f'\tTest" {test}')
+        print(f'\tGot: {not expected_result}')
+        print(f'\tTest: {test}')

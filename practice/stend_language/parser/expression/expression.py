@@ -3,7 +3,9 @@ from parser.common.identifier import identifier
 from parser.common.string import string
 from parser.common.boolean import boolean
 from parser.common.char import char
-from lexer.token_provider import pop_token, read_token
+from lexer.token_provider import pop_token, match_token
+from lexer.lexer import MINUS, NOT, LPAREN, RPAREN, EQUAL, NOT_EQUAL, LESS_THAN, GREATER_THAN, LESS_OR_EQUAL_THAN, GREATER_OR_EQUAL_THAN, PLUS, OR, STAR, SLASH, DIV, MOD, AND
+
 
 def expression() -> bool:
     # <EXPRESSION> -> <SIMPLE EXPRESSION><RELATION><EXPRESSION> | <SIMPLE EXPRESSION>
@@ -17,12 +19,14 @@ def expression() -> bool:
     except Exception:
         return False
 
+
 def relation() -> bool:
     # <RELATION> -> = | <> | < | > | <= | >=
     try:
-        return read_token() in ["=", "<>", "<", ">", "<=", ">="]
+        return match_token(EQUAL) or match_token(NOT_EQUAL) or match_token(LESS_THAN) or match_token(GREATER_THAN) or match_token(LESS_OR_EQUAL_THAN) or match_token(GREATER_OR_EQUAL_THAN)
     except Exception:
         return False
+
 
 def simple_expression() -> bool:
     # <SIMPLE EXPRESSION> -> <TERM><PLUS><SIMPLE EXPRESSION> | <TERM>
@@ -36,12 +40,14 @@ def simple_expression() -> bool:
     except Exception:
         return False
 
+
 def addition() -> bool:
     # <PLUS> -> + | or | -
     try:
-        return read_token() in ["+", "-", "or"]
+        return match_token(PLUS) or match_token(MINUS) or match_token(OR)
     except Exception:
         return False
+
 
 def term() -> bool:
     # <TERM> -> <FACTOR><MULTIPLY><TERM> | <FACTOR>
@@ -55,12 +61,14 @@ def term() -> bool:
     except Exception:
         return False
 
+
 def multiply() -> bool:
-    # <MULTIPLY> -> * | / | div | mod
+    # <MULTIPLY> -> * | / | div | mod | and
     try:
-        return read_token() in ["*", "/", "div", "mod", "and"]
+        return match_token(STAR) or match_token(SLASH) or match_token(DIV) or match_token(MOD) or match_token(AND)
     except Exception:
         return False
+
 
 def factor() -> bool:
     # <FACTOR> -> -<FACTOR> 
@@ -81,10 +89,10 @@ def factor() -> bool:
         if char():
             pop_token()
             return True
-        if read_token() == "(":
+        if match_token(LPAREN):
             pop_token()
-            return simple_expression() and pop_token() == ")"
-        if read_token() == "-" or read_token() == "not":
+            return simple_expression() and match_token(RPAREN) and pop_token()
+        if match_token(MINUS) or match_token(NOT):
             pop_token()
             return factor()
         if identifier():
