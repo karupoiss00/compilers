@@ -1,4 +1,3 @@
-import re
 from lexer.token_provider import match_token, read_token
 from lexer.lexer import STRING
 
