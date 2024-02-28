@@ -1,7 +1,8 @@
 from parser.expression.expression import expression
 from identifier import identifier
 from number import number
-from lexer.token_provider import pop_token, read_token
+from lexer.token_provider import pop_token, read_token, match_token
+from lexer.lexer import WHILE, DO, EL
 from lexer.temp_token_provider import NoNextTokenException
 
 # LIST STATEMENTS #
@@ -86,13 +87,14 @@ def while_statement() -> bool:
     """<WHILE STATEMENT> -> WHILE <EXPRESSION> do <LIST STATEMENTS> el"""
 
     return (
-        read_token() == "WHILE"
+        match_token(WHILE)
         and pop_token()
         and expression()
-        and read_token() == "DO"
+        and match_token(DO)
         and pop_token()
         and list_statements()
-        and pop_token() == "EL"
+        and match_token(EL)
+        and pop_token()
     )
 
 def read_statement() -> bool:
