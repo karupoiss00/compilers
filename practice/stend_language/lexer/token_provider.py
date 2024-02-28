@@ -23,6 +23,11 @@ def read_token() -> Token:
         next_token = get_token()
     return next_token
 
+
+def match_token(token_id: int) -> bool:
+    return read_token().id == token_id
+
+
 def clear_next_token():
     global next_token
     next_token = None

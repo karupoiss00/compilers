@@ -1,5 +1,8 @@
 from number import number
 from identifier import identifier
+from string import string
+from boolean import boolean
+from char import char
 from lexer.token_provider import pop_token, read_token
 
 def expression() -> bool:
@@ -34,7 +37,7 @@ def simple_expression() -> bool:
         return False
 
 def addition() -> bool:
-    # <PLUS> -> + | or
+    # <PLUS> -> + | or | -
     try:
         return read_token() in ["+", "-", "or"]
     except Exception:
@@ -55,7 +58,7 @@ def term() -> bool:
 def multiply() -> bool:
     # <MULTIPLY> -> * | / | div | mod
     try:
-        return read_token() in ["*", "/", "div", "mod"]
+        return read_token() in ["*", "/", "div", "mod", "and"]
     except Exception:
         return False
 
@@ -67,6 +70,15 @@ def factor() -> bool:
     # | not <FACTOR>
     try:
         if number():
+            pop_token()
+            return True
+        if string():
+            pop_token()
+            return True
+        if boolean():
+            pop_token()
+            return True
+        if char():
             pop_token()
             return True
         if read_token() == "(":
