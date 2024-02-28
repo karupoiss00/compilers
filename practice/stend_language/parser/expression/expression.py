@@ -1,8 +1,8 @@
-from number import number
-from identifier import identifier
-from string import string
-from boolean import boolean
-from char import char
+from parser.common.number import number
+from parser.common.identifier import identifier
+from parser.common.string import string
+from parser.common.boolean import boolean
+from parser.common.char import char
 from lexer.token_provider import pop_token, read_token
 
 def expression() -> bool:

@@ -1,9 +1,9 @@
-from expression.expression import expression
-from common.identifier import identifier
-from lexer.token_provider import pop_token, read_token
-from common.type import type_
+from lexer.token_provider import pop_token
 from lexer.lexer import COMMA, SEMICOLON, CONST, NOC, ASSIGN, VAR, RAV
 from lexer.token_provider import match_token
+from parser.common.identifier import identifier
+from parser.expression.expression import expression
+
 
 # DECLARATION #
 

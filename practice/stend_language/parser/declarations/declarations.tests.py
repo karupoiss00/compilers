@@ -1,7 +1,4 @@
-import sys; sys.path.append("../.."); sys.path.append(".."); sys.path.append("../common"); # To access upper modules without IDE
-
-from declarations import declarations
-
+from parser.declarations.declarations import declarations
 from lexer.lexer import *
 
 tests = [
