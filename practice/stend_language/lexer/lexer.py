@@ -52,6 +52,7 @@ WRITE = 46
 WRITELINE = 47
 READ = 48
 READLINE = 49
+COMMA = 50
 
 CASE_SENSITIVE_LEXEMS = [WRITE, WRITELINE, READ, READLINE, STRING_TYPE, INT_TYPE, FLOAT_TYPE, BOOLEAN_TYPE, CHAR_TYPE]
 
@@ -86,6 +87,7 @@ LEXEMS = [
     ['DO', r'^\bdo\b', DO],
     ['ROF', r'^\brof\b', ROF],
     ['OR', r'^\bor\b', OR],
+    ['COMMA', r'^,', COMMA],
     [':=', r'^:=', ASSIGN],
     [';', r'^;', SEMICOLON],
     ['IDENTIFIER', r'^\b[a-zA-Z_]+\b', IDENTIFIER],
