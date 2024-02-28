@@ -1,25 +1,17 @@
-import sys; sys.path.append("../..") # To access lexer module without IDE
+import sys; sys.path.append("../.."); sys.path.append(".."); sys.path.append("../common"); # To access upper modules without IDE
+
+from declarations import declarations
 
 from lexer.lexer import *
 
 tests = [
     ('''
-CONST 
-    String id := 123; 
-    Int id := 123; 
-    Float id := 1.23;
-    Boolean id := 1.24;
-    Char id := 123
-NOC
-VAR
-    Int id := 123 
-RAV 
+VAR 
+    String id := 'A'
+RAV
 ''', [
-    [2, "CONST"], [6, "String"], [27, "id"], [25, ":="], [29, "123"], [26, ";"], [7, "Int"], [27, "id"],
-    [25, ":="], [29, "123"], [26, ";"], [8, "Float"], [27, "id"], [25, ":="], [28, "1.23"], [26, ";"], [9, "Boolean"],
-    [27, "id"], [25, ":="], [28, "1.24"], [26, ";"], [10, "Char"], [27, "id"], [25, ":="], [29, "123"], [3, "NOC"],
-    [4, "VAR"], [7, "Int"], [27, "id"], [25, ":="], [29, "123"], [5, "RAV"],
-]),
+    [VAR, "VAR"], [STRING_TYPE, "String"], [IDENTIFIER, "id"], [ASSIGN, ":="], [CHAR, "'A'"], [RAV, "RAV"]
+], True),
 
 ('''
 CONST 
@@ -30,7 +22,7 @@ CONST
     Char id := 1
 NOC
 VAR
-    String id:='A';;
+    String id:='A';
     Int id:="AB"; 
     Float id:=1.0;
     Boolean id:=100;
@@ -43,28 +35,28 @@ RAV
     [BOOLEAN_TYPE, "Boolean"], [IDENTIFIER, "id"], [ASSIGN, ":="], [NUMBER, "100"], [SEMICOLON, ";"], [CHAR_TYPE, "Char"], [IDENTIFIER, "id"], 
     [ASSIGN, ":="], [NUMBER, "1"], [NOC, "NOC"],
     [VAR, "VAR"], [STRING_TYPE, "String"], [IDENTIFIER, "id"], [ASSIGN, ":="], 
-    [CHAR, "'A'"], [SEMICOLON, ";"], [SEMICOLON, ";"], [INT_TYPE, "Int"], [IDENTIFIER, "id"], [ASSIGN, ":="], [STRING, '"AB"'], 
+    [CHAR, "'A'"], [SEMICOLON, ";"], [INT_TYPE, "Int"], [IDENTIFIER, "id"], [ASSIGN, ":="], [STRING, '"AB"'], 
     [SEMICOLON, ";"], [FLOAT_TYPE, "Float"], [IDENTIFIER, "id"], [ASSIGN, ":="], [FLOAT, "1.0"], [SEMICOLON, ";"], 
     [BOOLEAN_TYPE, "Boolean"], [IDENTIFIER, "id"], [ASSIGN, ":="], [NUMBER, "100"], [SEMICOLON, ";"], [CHAR_TYPE, "Char"], [IDENTIFIER, "id"], 
     [ASSIGN, ":="], [NUMBER, "1"],[RAV, "RAV"],
-]),
+], True),
 
 ('''
 CONST 
 RAV 
 ''', [
     [CONST, "CONST"], [RAV, "RAV"],
-]),
+], False),
 
 ('''
 
 ''', [
     
-])
+], False)
 ]
 
 for test_id, test_data in enumerate(tests):
-    test, expected_token_list = test_data
+    test, expected_token_list, should_be_valid = test_data
     tokenize(test)
     if len(expected_token_list) != get_tokens_count():
         raise Exception(f'''
@@ -80,5 +72,13 @@ for test_id, test_data in enumerate(tests):
             print(f'\tExpected: {token}')
             print(f'\tGot: {result_token.__dict__}')
             continue
+    
+    tokenize(test)
+    try:
+        if declarations() == should_be_valid:
+            print(f'{test_id + 1}:\tOK')
+            continue
+    except NoNextTokenException:
+        pass
+    print(f'{test_id + 1}:\tFAIL')
 
-    print(f'{test_id + 1}:\tOK')

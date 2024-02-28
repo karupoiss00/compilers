@@ -1,4 +1,4 @@
-from expression import expression
+from expression.expression import expression
 from common.identifier import identifier
 from lexer.token_provider import pop_token, read_token
 from common.type import type_
