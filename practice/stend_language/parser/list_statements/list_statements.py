@@ -67,21 +67,21 @@ def for_statement() -> bool:
     """<FOR STATEMENT> -> for <IDENTIFIER> := <NUMBER> to <NUMBER> do <LIST STATEMENTS> rof"""
 
     return (
-            read_token() == "FOR"
+            match_token(FOR)
             and pop_token()
             and identifier()
             and pop_token()
-            and pop_token() == ":="
+            and pop_token(ASSIGN)
             and number()
             and pop_token()
-            and pop_token() == "TO"
+            and pop_token(TO)
             and number()
             and pop_token()
-            and pop_token() == "DO"
+            and pop_token(DO)
             and list_statements()
-            and pop_token() == "ROF"
+            and pop_token(ROF)
     )
-
+    
 def while_statement() -> bool:
     """<WHILE STATEMENT> -> WHILE <EXPRESSION> do <LIST STATEMENTS> el"""
 
