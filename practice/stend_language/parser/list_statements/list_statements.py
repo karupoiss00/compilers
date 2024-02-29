@@ -1,8 +1,9 @@
 from parser.expression.expression import expression
-from identifier import identifier
-from number import number
-from lexer.token_provider import pop_token, read_token
-from lexer.temp_token_provider import NoNextTokenException
+from parser.common.identifier import identifier
+from parser.common.number import number
+from lexer.token_provider import match_token, pop_token, read_token
+from lexer.lexer import LBRACKET, RBRACKET, SEMICOLON, ASSIGN
+from lexer.lexer import NoNextTokenException
 
 # LIST STATEMENTS #
 
@@ -10,7 +11,7 @@ def list_statements() -> bool:
     """<LIST STATEMENTS> -> <STATEMENT>;<LIST STATEMENTS>|<STATEMENT>"""
     try:
         if (statement()):
-            if (read_token() == ';'):
+            if (match_token(SEMICOLON)):
                 pop_token()
                 return list_statements()
             return True
@@ -21,7 +22,7 @@ def list_statements() -> bool:
 # RULES #
 
 def statement() -> bool:
-    """<STATEMENT> -> <EMPTY STATEMENT> | <ASSIGNMENT STATEMENT> | <IF STATEMENT>"""
+    """<STATEMENT> -> <EMPTY STATEMENT> | <ASSIGNMENT STATEMENT> | <IF STATEMENT> | [ LIST STATEMENT ]"""
     """TODO поддержать в [ <LIST STATEMENT> ]"""
     return (
         empty_statement()
@@ -31,18 +32,22 @@ def statement() -> bool:
         or if_statement()
         or write_statement()
         or read_statement()
+        or
+        (
+            match_token(LBRACKET) and pop_token() and list_statements() and match_token(RBRACKET) and pop_token()
+        )
     )
 
 def empty_statement() -> bool:
     """<EMPTY STATEMENT> -> ;"""
-    if (read_token() == ';'):
+    if (match_token(SEMICOLON)):
         pop_token()
         return True
     return False
 
 def assignment_statement() -> bool:
     """<ASSIGNMENT STATEMENT> -> <IDENTIFIER> := <EXPRESSION>"""
-    return identifier() and pop_token() and pop_token() == ":=" and expression()
+    return identifier() and pop_token() and match_token(ASSIGN) and pop_token() and expression()
 
 def if_statement() -> bool:
     """<IF STATEMENT> -> IF <EXPRESSION> THEN <STATEMENT><OPTIONAL ELSE> FI"""
