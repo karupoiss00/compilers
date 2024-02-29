@@ -1,7 +1,7 @@
 from parser.expression.expression import expression
 from parser.common.identifier import identifier
 from parser.common.number import number
-from lexer.token_provider import match_token, pop_token, read_token
+from lexer.token_provider import match_token, pop_token
 from lexer.lexer import *
 
 # LIST STATEMENTS #
@@ -116,18 +116,28 @@ def read_statement() -> bool:
 
 def readline() -> bool:
     """<READLINE> -> ReadLine(<IDENTIFIER>)"""
-    try:
-        return read_token() == "READLINE" and pop_token() and pop_token() == "(" and identifier() and pop_token() and pop_token() == ")"
-    except Exception:
-        return False
+    return (match_token(READLINE)
+            and pop_token()
+            and match_token(LPAREN)
+            and pop_token()
+            and identifier()
+            and pop_token()
+            and match_token(RPAREN)
+            and pop_token()
+    )
 
 
 def read() -> bool:
     """<READ> -> Read(<IDENTIFIER>)"""
-    try:
-        return read_token() == "READ" and pop_token() and pop_token() == "(" and identifier() and pop_token() and pop_token() == ")"
-    except Exception:
-        return False
+    return (match_token(READ)
+            and pop_token()
+            and match_token(LPAREN)
+            and pop_token()
+            and identifier()
+            and pop_token()
+            and match_token(RPAREN)
+            and pop_token()
+    )
 
 
 def write_statement() -> bool:
@@ -137,15 +147,25 @@ def write_statement() -> bool:
 
 def writeline() -> bool:
     """<WRITELINE> -> WriteLine(<IDENTIFIER>)"""
-    try:
-        return read_token() == "WRITELINE" and pop_token() and pop_token() == "(" and expression() and pop_token() == ")"
-    except Exception:
-        return False
+    return (match_token(WRITELINE)
+            and pop_token()
+            and match_token(LPAREN)
+            and pop_token()
+            and expression()
+            and pop_token()
+            and match_token(RPAREN)
+            and pop_token()
+    )
 
 
 def write() -> bool:
     """<WRITE> -> Write(<IDENTIFIER>)"""
-    try:
-        return read_token() == "WRITE" and pop_token() and pop_token() == "(" and expression() and pop_token() == ")"
-    except Exception:
-        return False
+    return (match_token(WRITE)
+            and pop_token()
+            and match_token(LPAREN)
+            and pop_token()
+            and expression()
+            and pop_token()
+            and match_token(RPAREN)
+            and pop_token()
+    )
