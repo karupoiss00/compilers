@@ -1,5 +1,5 @@
 from typing import Optional
-from lexer.lexer import get_token, tokenize, Token
+from lexer.lexer import get_token, tokenize, Token, NoNextTokenException
 
 next_token: Optional[Token] = None
 
@@ -26,7 +26,10 @@ def read_token() -> Token:
 
 
 def match_token(token_id: int) -> bool:
-    return read_token().id == token_id
+    try:
+        return read_token().id == token_id
+    except NoNextTokenException:
+        return False
 
 
 def clear_next_token():
