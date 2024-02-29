@@ -41,8 +41,11 @@ def simple_expression() -> bool:
 
 def addition() -> bool:
     # <PLUS> -> + | or | -
-    return (match_token(PLUS)
-            or match_token(MINUS) or match_token(OR))
+    return (
+        match_token(PLUS)
+        or match_token(MINUS)
+        or match_token(OR)
+    )
 
 
 def term() -> bool:
