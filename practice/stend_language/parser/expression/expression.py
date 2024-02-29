@@ -4,7 +4,7 @@ from parser.common.string import string
 from parser.common.boolean import boolean
 from parser.common.char import char
 from lexer.token_provider import pop_token, match_token
-from lexer.lexer import MINUS, NOT, LPAREN, RPAREN, EQUAL, NOT_EQUAL, LESS_THAN, GREATER_THAN, LESS_OR_EQUAL_THAN, GREATER_OR_EQUAL_THAN, PLUS, OR, STAR, SLASH, DIV, MOD, AND
+from lexer.lexer import *
 
 
 def expression() -> bool:
