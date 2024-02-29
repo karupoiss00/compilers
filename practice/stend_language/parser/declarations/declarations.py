@@ -1,7 +1,10 @@
-from expression import expression
-from identifier import identifier
-from lexer.token_provider import pop_token, read_token
-from type import type_
+from lexer.token_provider import pop_token
+from lexer.lexer import COMMA, SEMICOLON, CONST, NOC, ASSIGN, VAR, RAV
+from lexer.token_provider import match_token
+from parser.common.type import type_
+from parser.common.identifier import identifier
+from parser.expression.expression import expression
+
 
 # DECLARATION #
 
@@ -18,10 +21,10 @@ def declarations() -> bool:
 def list_const() -> bool:
     """<LIST CONST> -> CONST <LIST SECTION CONST> NOC"""
     return (
-        read_token() == "CONST"
+        match_token(CONST)
         and pop_token()
         and list_section_const()
-        and pop_token() == "NOC"
+        and pop_token().id == NOC
     )
 
 
@@ -32,17 +35,17 @@ def list_section_const() -> bool:
 
 def list_section_const_postfix() -> bool:
     """;<LIST SECTION CONST>"""
-    return read_token() == ";" and pop_token() and list_section_const() or True
+    return match_token(SEMICOLON) and pop_token() and list_section_const() or True
 
 
 def section_const() -> bool:
     """<SECTION CONST> -> <TYPE> <IDENTIFIER> := <EXPRESSION>"""
-    return type_() and identifier() and pop_token() and pop_token() == ":=" and expression()
+    return type_() and identifier() and pop_token() and pop_token().id == ASSIGN and expression()
 
 
 def list_var() -> bool:
     """<LIST VAR> -> VAR <LIST SECTION VAR> RAV"""
-    return pop_token() == "VAR" and list_section_var() and pop_token() == "RAV"
+    return pop_token().id == VAR and list_section_var() and pop_token().id == RAV
 
 
 def list_section_var() -> bool:
@@ -53,7 +56,7 @@ def list_section_var() -> bool:
 
 def list_section_var_postfix() -> bool:
     """;<LIST SECTION VAR>"""
-    return read_token() == ";" and pop_token() and list_section_var() or True
+    return match_token(SEMICOLON) and pop_token() and list_section_var() or True
 
 
 def section_var() -> bool:
@@ -63,7 +66,7 @@ def section_var() -> bool:
 
 def section_var_postfix() -> bool:
     """:= <EXPRESSION>"""
-    return read_token() == ":=" and pop_token() and expression() or True
+    return match_token(ASSIGN) and pop_token() and expression() or True
 
 
 def identifier_list() -> bool:
@@ -73,4 +76,4 @@ def identifier_list() -> bool:
 
 def identifier_list_postfix() -> bool:
     """,<IDENTIFIER LIST>"""
-    return read_token() == "," and pop_token() and identifier_list() or True
+    return match_token(COMMA) and pop_token() and identifier_list() or True

@@ -1,6 +1,5 @@
-import re
-from lexer.token_provider import read_token
+from lexer.token_provider import match_token, read_token
+from lexer.lexer import CHAR
 
 def char() -> bool:
-    token = read_token()
-    return re.match("^'.'$", token) != None
+    return match_token(CHAR)
