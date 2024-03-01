@@ -5,6 +5,7 @@ from parser.common.boolean import boolean
 from parser.common.char import char
 from lexer.token_provider import pop_token, match_token
 from lexer.lexer import *
+from lexer.token_type import TokenType
 
 
 def expression() -> bool:
@@ -20,12 +21,12 @@ def expression() -> bool:
 def relation() -> bool:
     # <RELATION> -> = | <> | < | > | <= | >=
     return (
-        match_token(EQUAL)
-        or match_token(NOT_EQUAL)
-        or match_token(LESS_THAN)
-        or match_token(GREATER_THAN)
-        or match_token(LESS_OR_EQUAL_THAN)
-        or match_token(GREATER_OR_EQUAL_THAN)
+        match_token(TokenType.EQUAL)
+        or match_token(TokenType.NOT_EQUAL)
+        or match_token(TokenType.LESS_THAN)
+        or match_token(TokenType.GREATER_THAN)
+        or match_token(TokenType.LESS_OR_EQUAL_THAN)
+        or match_token(TokenType.GREATER_OR_EQUAL_THAN)
     )
 
 
@@ -42,9 +43,9 @@ def simple_expression() -> bool:
 def addition() -> bool:
     # <PLUS> -> + | or | -
     return (
-        match_token(PLUS)
-        or match_token(MINUS)
-        or match_token(OR)
+        match_token(TokenType.PLUS)
+        or match_token(TokenType.MINUS)
+        or match_token(TokenType.OR)
     )
 
 
@@ -61,11 +62,11 @@ def term() -> bool:
 def multiply() -> bool:
     # <MULTIPLY> -> * | / | div | mod | and
     return (
-        match_token(STAR)
-        or match_token(SLASH)
-        or match_token(DIV)
-        or match_token(MOD)
-        or match_token(AND)
+        match_token(TokenType.STAR)
+        or match_token(TokenType.SLASH)
+        or match_token(TokenType.DIV)
+        or match_token(TokenType.MOD)
+        or match_token(TokenType.AND)
     )
 
 
@@ -87,10 +88,10 @@ def factor() -> bool:
     if char():
         pop_token()
         return True
-    if match_token(LPAREN):
+    if match_token(TokenType.LPAREN):
         pop_token()
-        return simple_expression() and match_token(RPAREN) and pop_token()
-    if match_token(MINUS) or match_token(NOT):
+        return simple_expression() and match_token(TokenType.RPAREN) and pop_token()
+    if match_token(TokenType.MINUS) or match_token(TokenType.NOT):
         pop_token()
         return factor()
     if identifier():

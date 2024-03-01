@@ -1,5 +1,6 @@
 from parser.declarations.declarations import declarations
 from lexer.lexer import *
+from lexer.token_type import TokenType
 
 tests = [
     ('''
@@ -7,7 +8,8 @@ VAR
     String id := 'A'
 RAV
 ''', [
-    [VAR, "VAR"], [STRING_TYPE, "String"], [IDENTIFIER, "id"], [ASSIGN, ":="], [CHAR, "'A'"], [RAV, "RAV"]
+    [TokenType.VAR, "VAR"], [TokenType.STRING_TYPE, "String"], [TokenType.IDENTIFIER, "id"], 
+    [TokenType.ASSIGN, ":="], [TokenType.CHAR, "'A'"], [TokenType.RAV, "RAV"]
 ], True),
 
 ('''
@@ -26,23 +28,26 @@ VAR
     Char id:=1
 RAV 
 ''', [
-    [CONST, "CONST"], [STRING_TYPE, "String"], [IDENTIFIER, "id"], [ASSIGN, ":="], 
-    [CHAR, "'A'"], [SEMICOLON, ";"], [INT_TYPE, "Int"], [IDENTIFIER, "id"], [ASSIGN, ":="], [STRING, '"AB"'], 
-    [SEMICOLON, ";"], [FLOAT_TYPE, "Float"], [IDENTIFIER, "id"], [ASSIGN, ":="], [FLOAT, "1.0"], [SEMICOLON, ";"], 
-    [BOOLEAN_TYPE, "Boolean"], [IDENTIFIER, "id"], [ASSIGN, ":="], [NUMBER, "100"], [SEMICOLON, ";"], [CHAR_TYPE, "Char"], [IDENTIFIER, "id"], 
-    [ASSIGN, ":="], [NUMBER, "1"], [NOC, "NOC"],
-    [VAR, "VAR"], [STRING_TYPE, "String"], [IDENTIFIER, "id"], [ASSIGN, ":="], 
-    [CHAR, "'A'"], [SEMICOLON, ";"], [INT_TYPE, "Int"], [IDENTIFIER, "id"], [ASSIGN, ":="], [STRING, '"AB"'], 
-    [SEMICOLON, ";"], [FLOAT_TYPE, "Float"], [IDENTIFIER, "id"], [ASSIGN, ":="], [FLOAT, "1.0"], [SEMICOLON, ";"], 
-    [BOOLEAN_TYPE, "Boolean"], [IDENTIFIER, "id"], [ASSIGN, ":="], [NUMBER, "100"], [SEMICOLON, ";"], [CHAR_TYPE, "Char"], [IDENTIFIER, "id"], 
-    [ASSIGN, ":="], [NUMBER, "1"],[RAV, "RAV"],
+    [TokenType.CONST, "CONST"], [TokenType.STRING_TYPE, "String"], [TokenType.IDENTIFIER, "id"], [TokenType.ASSIGN, ":="], 
+    [TokenType.CHAR, "'A'"], [TokenType.SEMICOLON, ";"], [TokenType.INT_TYPE, "Int"], [TokenType.IDENTIFIER, "id"], 
+    [TokenType.ASSIGN, ":="], [TokenType.STRING, '"AB"'], [TokenType.SEMICOLON, ";"], [TokenType.FLOAT_TYPE, "Float"], 
+    [TokenType.IDENTIFIER, "id"], [TokenType.ASSIGN, ":="], [TokenType.FLOAT, "1.0"], [TokenType.SEMICOLON, ";"], 
+    [TokenType.BOOLEAN_TYPE, "Boolean"], [TokenType.IDENTIFIER, "id"], [TokenType.ASSIGN, ":="], [TokenType.NUMBER, "100"], 
+    [TokenType.SEMICOLON, ";"], [TokenType.CHAR_TYPE, "Char"], [TokenType.IDENTIFIER, "id"], [TokenType.ASSIGN, ":="], 
+    [TokenType.NUMBER, "1"], [TokenType.NOC, "NOC"], [TokenType.VAR, "VAR"], [TokenType.STRING_TYPE, "String"], [TokenType.IDENTIFIER, "id"], 
+    [TokenType.ASSIGN, ":="], [TokenType.CHAR, "'A'"], [TokenType.SEMICOLON, ";"], [TokenType.INT_TYPE, "Int"], [TokenType.IDENTIFIER, "id"], 
+    [TokenType.ASSIGN, ":="], [TokenType.STRING, '"AB"'], [TokenType.SEMICOLON, ";"], [TokenType.FLOAT_TYPE, "Float"], 
+    [TokenType.IDENTIFIER, "id"], [TokenType.ASSIGN, ":="], [TokenType.FLOAT, "1.0"], [TokenType.SEMICOLON, ";"], 
+    [TokenType.BOOLEAN_TYPE, "Boolean"], [TokenType.IDENTIFIER, "id"], [TokenType.ASSIGN, ":="], [TokenType.NUMBER, "100"], 
+    [TokenType.SEMICOLON, ";"], [TokenType.CHAR_TYPE, "Char"], [TokenType.IDENTIFIER, "id"], 
+    [TokenType.ASSIGN, ":="], [TokenType.NUMBER, "1"],[TokenType.RAV, "RAV"],
 ], True),
 
 ('''
 CONST 
 RAV 
 ''', [
-    [CONST, "CONST"], [RAV, "RAV"],
+    [TokenType.CONST, "CONST"], [TokenType.RAV, "RAV"],
 ], False),
 
 ('''
