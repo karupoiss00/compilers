@@ -1,5 +1,5 @@
 from parser.program import program
-from lexer.temp_token_provider import set_tokens
+from lexer.lexer import tokenize
 
 tests = [
     ('''
@@ -86,13 +86,9 @@ START { }
 
 for test_id, test_data in enumerate(tests):
     test, expected_result = test_data
-    tokens = test.split()
-    set_tokens(tokens)
+    tokens = tokenize(test)
 
-    try:
-       res = program()
-    except:
-        res = False
+    res = program()
 
     if res == expected_result:
         print(f'{test_id + 1}:\tOK')
