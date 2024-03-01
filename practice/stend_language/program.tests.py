@@ -88,10 +88,7 @@ for test_id, test_data in enumerate(tests):
     test, expected_result = test_data
     tokens = tokenize(test)
 
-    try:
-       res = program()
-    except:
-        res = False
+    res = program()
 
     if res == expected_result:
         print(f'{test_id + 1}:\tOK')
