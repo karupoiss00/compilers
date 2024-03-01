@@ -1,4 +1,4 @@
-from list_statements import list_statements
+from parser.list_statements.list_statements import list_statements
 from lexer.token_provider import clear_next_token, generate_tokens
 
 statement_tests = [

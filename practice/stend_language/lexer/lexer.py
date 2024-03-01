@@ -104,7 +104,7 @@ def tokenize(text):
         while line:
             line = line.strip()
             for lexem in LEXEMS:
-                flags = None if lexem[2] in CASE_SENSITIVE_LEXEMS else re.IGNORECASE
+                flags = 0 if lexem[2] in CASE_SENSITIVE_LEXEMS else re.IGNORECASE
                 result = re.search(lexem[1], line, flags)
 
                 if not result:

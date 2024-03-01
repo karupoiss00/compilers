@@ -1,5 +1,5 @@
-from lexer import tokenize, get_token, get_tokens_count
-from token_type import TokenType
+from lexer.lexer import tokenize, get_token, get_tokens_count
+from lexer.token_type import TokenType
 
 tests = [
     ('''
