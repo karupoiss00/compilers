@@ -1,6 +1,6 @@
 import re
 import io
-
+from lexer.token_type import TokenType
 
 START = 0
 FINISH = 1
@@ -58,12 +58,6 @@ FALSE = 52
 EQUAL = 53
 NOT_EQUAL = 54
 COMMA = 55
-
-ALL_TOKENS = [i for i in range(0, 55 + 1)]
-ALL_TYPES = (STRING_TYPE, INT_TYPE, FLOAT_TYPE, BOOLEAN_TYPE, CHAR_TYPE)
-CASE_SENSITIVE_LEXEMS = [WRITE, WRITELINE, READ, READLINE, STRING_TYPE, INT_TYPE, FLOAT_TYPE, BOOLEAN_TYPE, CHAR_TYPE]
-from lexer.token_type import TokenType
-
 
 CASE_SENSITIVE_LEXEMS = [
     TokenType.WRITE, 

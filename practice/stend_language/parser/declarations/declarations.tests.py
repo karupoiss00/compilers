@@ -1,7 +1,7 @@
 import sys
 
 sys.path.append('../..'); sys.path.append('..'); sys.path.append('.')
-from lexer.token_provider import clear_next_token, read_token;
+from lexer.token_provider import clear_next_token
 from declarations_ll1 import declarations
 from lexer.lexer import *
 
