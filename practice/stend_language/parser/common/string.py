@@ -1,5 +1,5 @@
 from lexer.token_provider import match_token, read_token
-from lexer.lexer import STRING
+from lexer.token_type import TokenType
 
 def string() -> bool:
-    return match_token(STRING)
+    return match_token(TokenType.STRING)
