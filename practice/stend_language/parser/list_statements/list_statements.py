@@ -1,25 +1,27 @@
 from parser.expression.expression import expression
-from parser.common.identifier import identifier
-from parser.common.number import number
-from lexer.token_provider import match_token, pop_token
-from lexer.lexer import *
-from lexer.token_type import TokenType
+from identifier import identifier
+from number import number
+from lexer.token_provider import pop_token, read_token
+from lexer.temp_token_provider import NoNextTokenException
 
 # LIST STATEMENTS #
 
 def list_statements() -> bool:
     """<LIST STATEMENTS> -> <STATEMENT>;<LIST STATEMENTS>|<STATEMENT>"""
-    if statement():
-        if match_token(TokenType.SEMICOLON):
-            pop_token()
-            return list_statements()
-        return True
-    return False
+    try:
+        if (statement()):
+            if (read_token() == ';'):
+                pop_token()
+                return list_statements()
+            return True
+        return False
+    except NoNextTokenException:
+        print('out of tokens')
+        return False
 # RULES #
 
-
 def statement() -> bool:
-    """<STATEMENT> -> <EMPTY STATEMENT> | <ASSIGNMENT STATEMENT> | <IF STATEMENT> | [ LIST STATEMENT ]"""
+    """<STATEMENT> -> <EMPTY STATEMENT> | <ASSIGNMENT STATEMENT> | <IF STATEMENT>"""
     """TODO поддержать в [ <LIST STATEMENT> ]"""
     return (
         empty_statement()
@@ -29,142 +31,130 @@ def statement() -> bool:
         or if_statement()
         or write_statement()
         or read_statement()
-        or
-        (
-            match_token(TokenType.LBRACKET) and pop_token()
-            and list_statements() and
-            match_token(TokenType.RBRACKET) and pop_token()
-        )
+        or switch_statement()
     )
 
 def empty_statement() -> bool:
     """<EMPTY STATEMENT> -> ;"""
-    if match_token(TokenType.SEMICOLON):
+    if (read_token() == ';'):
         pop_token()
         return True
     return False
 
-
 def assignment_statement() -> bool:
     """<ASSIGNMENT STATEMENT> -> <IDENTIFIER> := <EXPRESSION>"""
-    return identifier() and pop_token() and match_token(TokenType.ASSIGN) and pop_token() and expression()
-
+    return identifier() and pop_token() and pop_token() == ":=" and expression()
 
 def if_statement() -> bool:
     """<IF STATEMENT> -> IF <EXPRESSION> THEN <STATEMENT><OPTIONAL ELSE> FI"""
     return (
-        match_token(TokenType.IF)
+        read_token() == 'IF'
         and pop_token()
         and expression()
-        and match_token(TokenType.THEN)
-        and pop_token()
+        and pop_token() == 'THEN'
         and list_statements()
         and optional_else()
-        and match_token(TokenType.FI)
-        and pop_token()
+        and pop_token() == 'FI'
     )
-
 
 def optional_else() -> bool:
     """<OPTIONAL ELSE> -> e | ELSE <STATEMENT>"""
-    if match_token(TokenType.ELSE):
+    if read_token() == 'ELSE':
         pop_token()
         return list_statements()
     return True
 
-
 def for_statement() -> bool:
     """<FOR STATEMENT> -> for <IDENTIFIER> := <NUMBER> to <NUMBER> do <LIST STATEMENTS> rof"""
+
     return (
-            match_token(TokenType.FOR)
+            read_token() == "FOR"
             and pop_token()
             and identifier()
             and pop_token()
-            and match_token(TokenType.ASSIGN)
-            and pop_token()
+            and pop_token() == ":="
             and number()
             and pop_token()
-            and match_token(TokenType.TO)
-            and pop_token()
+            and pop_token() == "TO"
             and number()
             and pop_token()
-            and match_token(TokenType.DO)
-            and pop_token()
+            and pop_token() == "DO"
             and list_statements()
-            and match_token(TokenType.ROF)
-            and pop_token()
+            and pop_token() == "ROF"
     )
-
 
 def while_statement() -> bool:
     """<WHILE STATEMENT> -> WHILE <EXPRESSION> do <LIST STATEMENTS> el"""
 
     return (
-        match_token(TokenType.WHILE)
+        read_token() == "WHILE"
         and pop_token()
         and expression()
-        and match_token(TokenType.DO)
+        and read_token() == "DO"
         and pop_token()
         and list_statements()
-        and match_token(TokenType.EL)
-        and pop_token()
+        and pop_token() == "EL"
     )
+
+def switch_statement() -> bool:
+    """<SWITCH_STATEMENT> -> SWITCH <IDENTIFIER> CASE <NUMBER> <LIST STATEMENTS>"""
+
+    return (
+        read_token() == "SWITCH"
+        and pop_token()
+        and identifier()
+        and pop_token()
+        and case()
+    )
+
+def case() -> bool():
+    """CASE -> CASE <NUMBER> <LIST STATEMENTS> <CASE>| CASE <NUMBER> <LIST STATEMENTS> iws"""
+
+    if read_token() == "CASE":
+        return (
+            read_token() == "CASE"
+            and pop_token()
+            and number()
+            and pop_token()
+            and list_statements()
+            and case()
+        )
+
+    return read_token() == "IWS"
 
 def read_statement() -> bool:
     """<READ STATEMENT> -> <READLINE> | <READ>"""
     return readline() or read()
 
-
 def readline() -> bool:
     """<READLINE> -> ReadLine(<IDENTIFIER>)"""
-    return (match_token(TokenType.READLINE)
-            and pop_token()
-            and match_token(TokenType.LPAREN)
-            and pop_token()
-            and identifier()
-            and pop_token()
-            and match_token(TokenType.RPAREN)
-            and pop_token()
-    )
-
+    try:
+        return read_token() == "READLINE" and pop_token() and pop_token() == "(" and identifier() and pop_token() and pop_token() == ")"
+    except Exception:
+        return False
 
 def read() -> bool:
     """<READ> -> Read(<IDENTIFIER>)"""
-    return (match_token(TokenType.READ)
-            and pop_token()
-            and match_token(TokenType.LPAREN)
-            and pop_token()
-            and identifier()
-            and pop_token()
-            and match_token(TokenType.RPAREN)
-            and pop_token()
-    )
-
+    try:
+        return read_token() == "READ" and pop_token() and pop_token() == "(" and identifier() and pop_token() and pop_token() == ")"
+    except Exception:
+        return False
 
 def write_statement() -> bool:
     """<WRITE STATEMENT> -> <WRITELINE> | <WRITE>"""
     return writeline() or write()
 
-
 def writeline() -> bool:
     """<WRITELINE> -> WriteLine(<IDENTIFIER>)"""
-    return (match_token(TokenType.WRITELINE)
-            and pop_token()
-            and match_token(TokenType.LPAREN)
-            and pop_token()
-            and expression()
-            and match_token(TokenType.RPAREN)
-            and pop_token()
-    )
-
+    try:
+        return read_token() == "WRITELINE" and pop_token() and pop_token() == "(" and expression() and pop_token() == ")"
+    except Exception:
+        return False
 
 def write() -> bool:
     """<WRITE> -> Write(<IDENTIFIER>)"""
-    return (match_token(TokenType.WRITE)
-            and pop_token()
-            and match_token(TokenType.LPAREN)
-            and pop_token()
-            and expression()
-            and match_token(TokenType.RPAREN)
-            and pop_token()
-    )
+    try:
+        return read_token() == "WRITE" and pop_token() and pop_token() == "(" and expression() and pop_token() == ")"
+    except Exception:
+        return False
+
