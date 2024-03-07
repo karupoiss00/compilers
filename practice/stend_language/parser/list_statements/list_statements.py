@@ -2,7 +2,6 @@ from parser.expression.expression import expression
 from parser.common.identifier import identifier
 from parser.common.number import number
 from lexer.token_provider import match_token, pop_token
-from lexer.lexer import *
 from lexer.token_type import TokenType
 
 # LIST STATEMENTS #
@@ -20,7 +19,6 @@ def list_statements() -> bool:
 
 def statement() -> bool:
     """<STATEMENT> -> <EMPTY STATEMENT> | <ASSIGNMENT STATEMENT> | <IF STATEMENT> | [ LIST STATEMENT ]"""
-    """TODO поддержать в [ <LIST STATEMENT> ]"""
     return (
         empty_statement()
         or assignment_statement()
