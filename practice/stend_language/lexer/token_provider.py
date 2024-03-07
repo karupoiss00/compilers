@@ -6,6 +6,10 @@ next_token: Optional[Token] = None
 last_match_tokens: Optional[list[str]] = None
 
 def generate_tokens(text: str):
+    global last_match_tokens
+    global next_token
+    last_match_tokens = None
+    next_token = None
     tokenize(text)
 
 
@@ -39,11 +43,11 @@ def match_token(token_id: TokenType) -> bool:
         return False
 
 
-def throw_match_error():
+def print_match_error():
     if last_match_tokens is None:
         return
     if last_match_tokens[0] != last_match_tokens[1]:
-        raise Exception(f'Expected {last_match_tokens[0]}, got {last_match_tokens[1]}')
+        print(f'Expected {last_match_tokens[1]}, got {last_match_tokens[0]}')
 
 
 def clear_next_token():
