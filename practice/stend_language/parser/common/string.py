@@ -1,6 +1,5 @@
-import re
-from lexer.token_provider import read_token
+from lexer.token_provider import match_token, read_token
+from lexer.token_type import TokenType
 
 def string() -> bool:
-    token = read_token()
-    return re.match("^\"[a-zA-Z0-9_\-]+\"$", token) != None
+    return match_token(TokenType.STRING)

@@ -1,34 +1,33 @@
-from list_statements import list_statements
-from lexer.temp_token_provider import set_tokens
-from lexer.token_provider import clear_next_token
+from parser.list_statements.list_statements import list_statements
+from lexer.token_provider import clear_next_token, generate_tokens
 
 statement_tests = [
-    ('; \0', True), #1
-    ('id := 5 \0', True), #2
-    ('IF id > 0 THEN id := 10 ELSE id := 0 FI \0', True), #3
-    ('IF id > 0 THEN id := 10 ELSE id := 0 \0', False),  #4 Missing 'FI'
-    ('VAR id := 5 RAV \0', False),  #5 Not a valid statement
+    (';', True), #1
+    ('id := 5', True), #2
+    ('IF id > 0 THEN id := 10 ELSE id := 0 FI ', True), #3
+    ('IF id > 0 THEN id := 10 ELSE id := 0 ', False),  #4 Missing 'FI'
+    ('VAR id := 5 RAV ', False),  #5 Not a valid statement
     ('''
     FOR
         id := 5 TO 10 DO id := 1
-    ROF \0''', True), #6
+    ROF ''', True), #6
     ('''
     FOR
         i := 5 to 10 k=k+1
-    ROF \0''', False), #7
+    ROF ''', False), #7
     ('''
     FOR
         i := 5 to 10 do
-    ROF \0''', False), #8
+    ROF ''', False), #8
     ('''
     FOR
         i = 5 to 10 do k=k+1
-    ROF \0''', False), #9
+    ROF ''', False), #9
     ('''
     FOR
-        i = 5 to 10 do k=k+1 \0
+        i = 5 to 10 do k=k+1 
     ''', False), #10
-    (' \0', False), #11
+    (' ', False), #11
     ('''
     IF id > 0 
     THEN 
@@ -41,52 +40,54 @@ statement_tests = [
     WHILE id < 5 
     DO
         id := id + 1
-    EL \0
+    EL
     ''', True), #12
     ('''
     WHILE id < 5
     DO
         id := id + 1
     EL
-    \0
+
     ''', True), #13
     ('''
     WRITE ( id + 1 )
-    \0
+    
     ''', True), #14
     ('''
     WRITELINE ( id + 1 )
-    \0
+    
     ''', True), #15
     ('''
     READ ( id )
-    \0
+    
     ''', True), #16
     ('''
     READLINE ( id )
-    \0
+    
     ''', True), #17
     ('''
     READLINE ( id + 1 )
-    \0
+    
     ''', False), #18
     ('''
        WHILE id < 5
        DO
            [ id := id + 1 ]
        EL
-       \0
-   ''', True),  # 13
+       
+   ''', True), # 19
 ]
 
 for test_id, test_data in enumerate(statement_tests):
     clear_next_token()
     test, expected_result = test_data
-    tokens = test.split()
-    set_tokens(tokens)
-    if list_statements() == expected_result:
+    generate_tokens(test)
+
+    result = list_statements()
+
+    if result == expected_result:
         print(f'{test_id + 1}:\tOK')
     else:
         print(f'{test_id + 1}:\tFAIL')
         print(f'\tExpected: {expected_result}')
-        print(f'\tGot: {list_statements()}')
+        print(f'\tGot: {result}')

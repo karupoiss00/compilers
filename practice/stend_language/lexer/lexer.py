@@ -1,112 +1,78 @@
 import re
 import io
+from lexer.token_type import TokenType
 
 
-START = 0
-FINISH = 1
-CONST = 2
-NOC = 3
-VAR = 4
-RAV = 5
-STRING_TYPE = 6
-INT_TYPE = 7
-FLOAT_TYPE = 8
-BOOLEAN_TYPE = 9
-CHAR_TYPE = 10
-DIV = 11
-MOD = 12
-NOT = 13
-IF = 14
-THEN = 15
-FI = 16
-ELSE = 17
-WHILE = 18
-DO = 19
-EL = 20
-FOR = 21
-TO = 22
-ROF = 23
-OR = 24
-ASSIGN = 25
-SEMICOLON = 26
-IDENTIFIER = 27
-FLOAT = 28
-NUMBER = 29
-STRING = 30
-CHAR = 31
-LPAREN = 32
-RPAREN = 33
-LBRACKET = 34
-RBRACKET = 35
-STAR = 36
-PLUS = 37
-MINUS = 38
-SLASH = 39
-LBRACE = 40
-RBRACE = 41
-GREATER_THAN = 42
-GREATER_OR_EQUAL_THAN = 43
-LESS_THAN = 44
-LESS_OR_EQUAL_THAN = 45
-WRITE = 46
-WRITELINE = 47
-READ = 48
-READLINE = 49
-
-CASE_SENSITIVE_LEXEMS = [WRITE, WRITELINE, READ, READLINE, STRING_TYPE, INT_TYPE, FLOAT_TYPE, BOOLEAN_TYPE, CHAR_TYPE]
+CASE_SENSITIVE_LEXEMS = [
+    TokenType.WRITE, 
+    TokenType.WRITELINE, 
+    TokenType.READ, 
+    TokenType.READLINE, 
+    TokenType.STRING_TYPE, 
+    TokenType.INT_TYPE, 
+    TokenType.FLOAT_TYPE, 
+    TokenType.BOOLEAN_TYPE, 
+    TokenType.CHAR_TYPE,
+]
 
 LEXEMS = [
-    ['START', r'^\bSTART\b', START],
-    ['FINISH', r'^\bFINISH\b', FINISH],
-    ['CONST', r'^\bCONST\b', CONST],
-    ['NOC', r'^\bNOC\b', NOC],
-    ['VAR', r'^\bVAR\b', VAR],
-    ['RAV', r'^\bRAV\b', RAV],
-    ['STRING_TYPE', r'^\bString\b', STRING_TYPE],
-    ['INT_TYPE', r'^\bInt\b', INT_TYPE],
-    ['FLOAT_TYPE', r'^\bFloat\b', FLOAT_TYPE],
-    ['BOOLEAN_TYPE', r'^\bBoolean\b', BOOLEAN_TYPE],
-    ['CHAR_TYPE', r'^\bChar\b', CHAR_TYPE],
-    ['WRITE', r'^\bWRITE\b', WRITE],
-    ['WRITELINE', r'^\bWRITELINE\b', WRITELINE],
-    ['READ', r'^\bREAD\b', READ],
-    ['READLINE', r'^\bREADLINE\b', READLINE],
-    ['DIV', r'^\bdiv\b', DIV],
-    ['MOD', r'^\bmod\b', MOD],
-    ['NOT', r'^\bnot\b', NOT],
-    ['IF', r'^\bif\b', IF],
-    ['THEN', r'^\bthen\b', THEN],
-    ['FI', r'^\bfi\b', FI],
-    ['ELSE', r'^\belse\b', ELSE],
-    ['WHILE', r'^\bwhile\b', WHILE],
-    ['DO', r'^\bdo\b', DO],
-    ['EL', r'^\bel\b', EL],
-    ['FOR', r'^\bfor\b', FOR],
-    ['TO', r'^\bto\b', TO],
-    ['DO', r'^\bdo\b', DO],
-    ['ROF', r'^\brof\b', ROF],
-    ['OR', r'^\bor\b', OR],
-    [':=', r'^:=', ASSIGN],
-    [';', r'^;', SEMICOLON],
-    ['IDENTIFIER', r'^\b[a-zA-Z_]+\b', IDENTIFIER],
-    ['FLOAT_VALUE', r'^\d+\.\d+', FLOAT],
-    ['INT_VALUE', r'^\d+', NUMBER],
-    ['STRING_VALUE', r'^\".*\"', STRING],
-    ['CHAR_VALUE', r'^\'.*\'', CHAR],
-    ['(', r'^\(', LPAREN],
-    [')', r'^\)', RPAREN],
-    ['[', r'^\[', LBRACKET],
-    [']', r'^\]', RBRACKET],
-    ['{', r'^\{', LBRACE],
-    ['}', r'^\}', RBRACE],
-    ['*', r'^\*', STAR],
-    ['+', r'^\+', PLUS],
-    ['-', r'^\-', MINUS],
-    ['/', r'^\/', SLASH],
-    ['>', r'^\>', GREATER_THAN],
-    ['<', r'^\<', LESS_THAN],
-    ['>=', r'^\>=', GREATER_OR_EQUAL_THAN],
-    ['<=', r'^\<=', LESS_OR_EQUAL_THAN]
+    ['START', r'^\bSTART\b', TokenType.START],
+    ['FINISH', r'^\bFINISH\b', TokenType.FINISH],
+    ['CONST', r'^\bCONST\b', TokenType.CONST],
+    ['NOC', r'^\bNOC\b', TokenType.NOC],
+    ['VAR', r'^\bVAR\b', TokenType.VAR],
+    ['RAV', r'^\bRAV\b', TokenType.RAV],
+    ['STRING_TYPE', r'^\bString\b', TokenType.STRING_TYPE],
+    ['INT_TYPE', r'^\bInt\b', TokenType.INT_TYPE],
+    ['FLOAT_TYPE', r'^\bFloat\b', TokenType.FLOAT_TYPE],
+    ['BOOLEAN_TYPE', r'^\bBoolean\b', TokenType.BOOLEAN_TYPE],
+    ['CHAR_TYPE', r'^\bChar\b', TokenType.CHAR_TYPE],
+    ['WRITE', r'^\bWRITE\b', TokenType.WRITE],
+    ['WRITELINE', r'^\bWRITELINE\b', TokenType.WRITELINE],
+    ['READ', r'^\bREAD\b', TokenType.READ],
+    ['READLINE', r'^\bREADLINE\b', TokenType.READLINE],
+    ['DIV', r'^\bdiv\b', TokenType.DIV],
+    ['MOD', r'^\bmod\b', TokenType.MOD],
+    ['NOT', r'^\bnot\b', TokenType.NOT],
+    ['IF', r'^\bif\b', TokenType.IF],
+    ['THEN', r'^\bthen\b', TokenType.THEN],
+    ['FI', r'^\bfi\b', TokenType.FI],
+    ['ELSE', r'^\belse\b', TokenType.ELSE],
+    ['WHILE', r'^\bwhile\b', TokenType.WHILE],
+    ['DO', r'^\bdo\b', TokenType.DO],
+    ['EL', r'^\bel\b', TokenType.EL],
+    ['FOR', r'^\bfor\b', TokenType.FOR],
+    ['TO', r'^\bto\b', TokenType.TO],
+    ['DO', r'^\bdo\b', TokenType.DO],
+    ['ROF', r'^\brof\b', TokenType.ROF],
+    ['OR', r'^\bor\b', TokenType.OR],
+    ['COMMA', r'^,', TokenType.COMMA],
+    [':=', r'^:=', TokenType.ASSIGN],
+    [';', r'^;', TokenType.SEMICOLON],
+    ['TRUE', r'^\btrue\b', TokenType.TRUE],
+    ['FALSE', r'^\bfalse\b', TokenType.FALSE],
+    ['IDENTIFIER', r'^\b[a-zA-Z_]+\b', TokenType.IDENTIFIER],
+    ['FLOAT_VALUE', r'^\d+\.\d+', TokenType.FLOAT],
+    ['INT_VALUE', r'^\d+', TokenType.NUMBER],
+    ['STRING_VALUE', r'^\"([^"]|"")*\"', TokenType.STRING],
+    ['CHAR_VALUE', r'^\'([^\']|\'\')*\'', TokenType.CHAR],
+    ['(', r'^\(', TokenType.LPAREN],
+    [')', r'^\)', TokenType.RPAREN],
+    ['[', r'^\[', TokenType.LBRACKET],
+    [']', r'^\]', TokenType.RBRACKET],
+    ['{', r'^\{', TokenType.LBRACE],
+    ['}', r'^\}', TokenType.RBRACE],
+    ['*', r'^\*', TokenType.STAR],
+    ['+', r'^\+', TokenType.PLUS],
+    ['-', r'^\-', TokenType.MINUS],
+    ['/', r'^\/', TokenType.SLASH],
+    ['>=', r'^\>=', TokenType.GREATER_OR_EQUAL_THAN],
+    ['<=', r'^\<=', TokenType.LESS_OR_EQUAL_THAN],
+    ['<>', r'^<>', TokenType.NOT_EQUAL],
+    ['>', r'^\>', TokenType.GREATER_THAN],
+    ['<', r'^\<', TokenType.LESS_THAN],
+    ['AND', r'^\band\b', TokenType.AND],
+    ['=', r'^\=', TokenType.EQUAL],
 ]
 
 
@@ -138,7 +104,7 @@ def tokenize(text):
         while line:
             line = line.strip()
             for lexem in LEXEMS:
-                flags = 0 if lexem[2] in CASE_SENSITIVE_LEXEMS else re.I
+                flags = 0 if lexem[2] in CASE_SENSITIVE_LEXEMS else re.IGNORECASE
                 result = re.search(lexem[1], line, flags)
 
                 if not result:
@@ -157,6 +123,7 @@ def tokenize(text):
         if len(line) != 0:
             raise Exception(f"Error, can't parse: {line}")
 
+
 def get_token() -> Token:
     global position
     if position < len(tokens):
@@ -165,6 +132,7 @@ def get_token() -> Token:
         return token
     else:
         raise NoNextTokenException
+
 
 def get_tokens_count() -> int:
     return len(tokens)
