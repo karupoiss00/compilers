@@ -108,18 +108,22 @@ def while_statement() -> bool:
         and match_token(TokenType.EL)
         and pop_token()
     )
-
+    
+    
 def do_while_statement() -> bool:
     """<DO WHILE STATEMENT> -> DO <LIST STATEMENTS> WHILE <EXPRESSION> el"""
+
     return (
-        read_token() == "DO"
+        match_token(TokenType.DO)
         and pop_token()
         and list_statements()
-        and read_token() == "WHILE"
+        and match_token(TokenType.WHILE)
         and pop_token()
         and expression()
-        and pop_token() == "EL"
+        and match_token(TokenType.EL)
+        and pop_token()
     )
+
 
 def read_statement() -> bool:
     """<READ STATEMENT> -> <READLINE> | <READ>"""
