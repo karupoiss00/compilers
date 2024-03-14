@@ -56,4 +56,7 @@ class TokenType(Enum):
     FALSE = 52
     EQUAL = 53
     NOT_EQUAL = 54
-    COMMA = 55    
+    COMMA = 55
+    SWITCH = 56
+    CASE = 57
+    IWS = 58

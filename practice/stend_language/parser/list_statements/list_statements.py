@@ -29,6 +29,7 @@ def statement() -> bool:
         or if_statement()
         or write_statement()
         or read_statement()
+        or switch_statement()
         or
         (
             match_token(TokenType.LBRACKET) and pop_token()
@@ -109,6 +110,33 @@ def while_statement() -> bool:
         and match_token(TokenType.EL)
         and pop_token()
     )
+
+def switch_statement() -> bool:
+    """<SWITCH_STATEMENT> -> SWITCH <IDENTIFIER> CASE <NUMBER> <LIST STATEMENTS>"""
+
+    return (
+        match_token(TokenType.SWITCH)
+        and pop_token()
+        and identifier()
+        and pop_token()
+        and case()
+    )
+
+
+def case() -> bool():
+    """CASE -> CASE <NUMBER> <LIST STATEMENTS> <CASE>| CASE <NUMBER> <LIST STATEMENTS> iws"""
+
+    if match_token(TokenType.CASE):
+        return (
+            pop_token()
+            and number()
+            and pop_token()
+            and list_statements()
+            and case()
+        )
+
+    return match_token(TokenType.IWS)
+
 
 def read_statement() -> bool:
     """<READ STATEMENT> -> <READLINE> | <READ>"""
