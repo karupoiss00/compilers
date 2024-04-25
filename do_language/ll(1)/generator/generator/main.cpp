@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
     }
 
     vector<Rule> rules = ReadGrammar(inputFile);
-    vector<TableStr> table = CreateTable(rules);
+    vector<TableRow> table = CreateTable(rules);
     PrintTable(table, outputFile);
 }
 

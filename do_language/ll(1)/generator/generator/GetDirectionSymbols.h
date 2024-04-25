@@ -57,7 +57,7 @@ std::set<std::string> DefineDirectionSymbolsAfterNonTerminal(const std::string& 
 void DefineDirectionSymbols(std::vector<Rule>& rules)
 {
     bool hasChanges = false;
-    for (int i = 0; i < rules.size(); i++)
+    for (size_t i = 0; i < rules.size(); i++)
     {
         Rule& rule = rules[i];
         if (rule.rightPart.size() == 0)

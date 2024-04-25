@@ -1,7 +1,7 @@
 #pragma once
 #include "TableStr.h"
 
-void PrintDirectionSymbols(const TableStr& tableStr, std::ofstream& outputFile)
+void PrintDirectionSymbols(const TableRow& tableStr, std::ostream& outputFile)
 {
     int index = 0;
     for (const std::string& symbol : tableStr.directionSymbols)
@@ -16,7 +16,7 @@ void PrintDirectionSymbols(const TableStr& tableStr, std::ofstream& outputFile)
     outputFile << ";";
 }
 
-void PrintBoolValue(const bool value, std::ofstream& outputFile)
+void PrintBoolValue(const bool value, std::ostream& outputFile)
 {
     if (value)
     {
@@ -29,7 +29,7 @@ void PrintBoolValue(const bool value, std::ofstream& outputFile)
     outputFile << ";";
 }
 
-void PrintPointer(const std::optional<unsigned int> pointer, std::ofstream& outputFile)
+void PrintPointer(const std::optional<size_t> pointer, std::ostream& outputFile)
 {
     if (pointer.has_value())
     {
@@ -42,13 +42,13 @@ void PrintPointer(const std::optional<unsigned int> pointer, std::ofstream& outp
     outputFile << ";";
 }
 
-void PrintTable(const std::vector<TableStr>& table, std::ofstream& outputFile)
+void PrintTable(const std::vector<TableRow>& table, std::ostream& outputFile)
 {
     outputFile << "index;symbol;directionSymbols;shift;error;pointer;stack;end" << std::endl;
 
     for (size_t i = 0; i < table.size(); i++)
     {
-        const TableStr& tableStr = table[i];
+        const TableRow& tableStr = table[i];
         outputFile << i + 1 << ";"
             << tableStr.symbol << ";";
         PrintDirectionSymbols(tableStr, outputFile);

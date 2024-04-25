@@ -139,6 +139,7 @@
     <ClInclude Include="PrintTable.h" />
     <ClInclude Include="ReadGrammar.h" />
     <ClInclude Include="Rule.h" />
+    <ClInclude Include="StringHelper.h" />
     <ClInclude Include="TableStr.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
