@@ -29,7 +29,7 @@
     <ClInclude Include="CreateTable.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="TableRow.h">
+    <ClInclude Include="TableStr.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="PrintTable.h">
@@ -38,7 +38,7 @@
     <ClInclude Include="GetDirectionSymbols.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="StringHelpers.h">
+    <ClInclude Include="StringHelper.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

@@ -6,7 +6,7 @@
 
 #include "Rule.h"
 #include "GetDirectionSymbols.h"
-#include "StringHelpers.h"
+#include "StringHelper.h"
 
 void ReadRightPart(const std::string& rightPartStr, const std::string& nonTerminal, std::vector<Rule>& rules)
 {
