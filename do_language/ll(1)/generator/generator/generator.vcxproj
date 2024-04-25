@@ -139,8 +139,8 @@
     <ClInclude Include="PrintTable.h" />
     <ClInclude Include="ReadGrammar.h" />
     <ClInclude Include="Rule.h" />
-    <ClInclude Include="StringHelper.h" />
-    <ClInclude Include="TableStr.h" />
+    <ClInclude Include="StringHelpers.h" />
+    <ClInclude Include="TableRow.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

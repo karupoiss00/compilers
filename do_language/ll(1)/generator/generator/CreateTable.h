@@ -1,6 +1,6 @@
 #pragma once
 #include "Rule.h"
-#include "TableStr.h"
+#include "TableRow.h"
 #include "GetDirectionSymbols.h"
 
 bool HasNonTerminal(size_t beginIndex, const std::vector<Rule>& rules, const std::string& nonTerminalName)

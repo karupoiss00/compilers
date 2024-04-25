@@ -1,5 +1,5 @@
 #pragma once
-#include "TableStr.h"
+#include "TableRow.h"
 
 void PrintDirectionSymbols(const TableRow& tableStr, std::ostream& outputFile)
 {
