@@ -75,16 +75,19 @@ statement_tests = [
            [ id := id + 1 ]
        EL
        
-   ''', True), # 9
+   ''', True), # 19
 ]
 
 for test_id, test_data in enumerate(statement_tests):
     clear_next_token()
     test, expected_result = test_data
     generate_tokens(test)
-    if list_statements() == expected_result:
+
+    result = list_statements()
+
+    if result == expected_result:
         print(f'{test_id + 1}:\tOK')
     else:
         print(f'{test_id + 1}:\tFAIL')
         print(f'\tExpected: {expected_result}')
-        print(f'\tGot: {list_statements()}')
+        print(f'\tGot: {result}')
