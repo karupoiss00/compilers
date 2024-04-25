@@ -131,7 +131,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CreateTable.cpp" />
+    <ClCompile Include="GetDirectionSymbols.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PrintTable.cpp" />
+    <ClCompile Include="ReadGrammar.cpp" />
+    <ClCompile Include="Rule.cpp" />
+    <ClCompile Include="StringHelpers.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CreateTable.h" />
