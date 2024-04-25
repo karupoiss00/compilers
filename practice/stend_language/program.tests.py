@@ -1,5 +1,5 @@
+from lexer.token_provider import generate_tokens
 from parser.program import program
-from lexer.lexer import tokenize
 
 tests = [
     ('''
@@ -86,7 +86,7 @@ START { }
 
 for test_id, test_data in enumerate(tests):
     test, expected_result = test_data
-    tokens = tokenize(test)
+    tokens = generate_tokens(test)
 
     res = program()
 
