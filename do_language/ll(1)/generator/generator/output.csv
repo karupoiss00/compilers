@@ -1,0 +1,8 @@
+index;symbol;directionSymbols;shift;error;pointer;stack;end
+1;S;a;-;-;3;-;-;
+2;S;b;-;+;7;-;-;
+3;a;a;+;+;4;-;-;
+4;S;a, b;-;+;1;+;-;
+5;b;b;+;+;6;-;-;
+6;#;#;-;+;NULL;-;+;
+7;e;b;+;+;NULL;-;-;
