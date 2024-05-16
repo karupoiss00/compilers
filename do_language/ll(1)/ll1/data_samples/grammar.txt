@@ -1,0 +1,6 @@
+<VAR> -> VAR <TYPE> <IDLIST> ; #
+<TYPE> -> INT
+<TYPE> -> BOOL
+<IDLIST> -> id <X>
+<X> -> e
+<X> -> , <IDLIST>

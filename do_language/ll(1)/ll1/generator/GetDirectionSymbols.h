@@ -9,3 +9,5 @@ std::set<std::string> GetDirectionSymbolsAfterNonTerminal(const Rule& rule, cons
 std::set<std::string> DefineDirectionSymbolsAfterNonTerminal(const std::string& nonTerminalName, const std::vector<Rule>& rules);
 
 void DefineDirectionSymbols(std::vector<Rule>& rules);
+
+std::vector<Rule> GetRulesWithNonterminal(const std::vector<Rule>& rules, const std::string& nonTerminal);

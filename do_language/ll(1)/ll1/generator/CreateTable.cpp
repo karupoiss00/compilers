@@ -28,19 +28,6 @@ int GetCountOfIdenticalNonterminals(const std::vector<Rule>& rules, const std::s
 	return countOfNonterminals;
 }
 
-std::optional<size_t> GetIndexOfNonterminal(const std::vector<Rule>& rules, const std::string& nonTerminal)
-{
-	for (size_t i = 0; i < rules.size(); i++)
-	{
-		if (rules[i].nonTerminal == nonTerminal)
-		{
-			return i;
-		}
-	}
-
-	return std::nullopt;
-}
-
 void AddNonterminals(const std::vector<Rule>& rules, std::vector<TableRow>& table)
 {
 	for (const Rule& rule : rules)
@@ -71,7 +58,6 @@ void AddOtherTableStrFromRightPart(const std::vector<Rule>& rules, std::vector<T
 		TableRow tableStr;
 		tableStr.symbol = rightSymbol;
 		bool isNonTerminal = IsNonTerminal(rightSymbol, rules);
-		tableStr.shift = !isNonTerminal;
 		tableStr.error = true;
 		if (isNonTerminal)
 		{
@@ -86,7 +72,7 @@ void AddOtherTableStrFromRightPart(const std::vector<Rule>& rules, std::vector<T
 			std::set<std::string> directionSymbols = GetTerminalDirectionSymbols(rules, rightSymbol, rule.nonTerminal);
 			tableStr.directionSymbols.insert(directionSymbols.begin(), directionSymbols.end());
 			tableStr.end = rightSymbol == END_SYMBOL;
-			tableStr.shift = rightSymbol != END_SYMBOL;
+			tableStr.shift = rightSymbol != END_SYMBOL && rightSymbol != EMPTY_SYMBOL;
 			bool isEndOfRule = i == rule.rightPart.size() - 1;
 			if (!isEndOfRule)
 			{

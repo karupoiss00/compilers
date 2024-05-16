@@ -41,6 +41,7 @@ int main(int argc, char* argv[])
     vector<Rule> rules = ReadGrammar(inputFile);
     vector<TableRow> table = CreateTable(rules);
     PrintTable(table, outputFile);
+    return 0;
 }
 
 optional<Args> ParseArgs(int argc, char* argv[])

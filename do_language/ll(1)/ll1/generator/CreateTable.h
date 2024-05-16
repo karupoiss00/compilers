@@ -7,8 +7,6 @@ bool HasNonTerminal(size_t beginIndex, const std::vector<Rule>& rules, const std
 
 int GetCountOfIdenticalNonterminals(const std::vector<Rule>& rules, const std::string& nonTerminal);
 
-std::optional<size_t> GetIndexOfNonterminal(const std::vector<Rule>& rules, const std::string& nonTerminal);
-
 void AddNonterminals(const std::vector<Rule>& rules, std::vector<TableRow>& table);
 
 std::set<std::string> GetTerminalDirectionSymbols(const std::vector<Rule>& rules, const std::string& terminalName, const std::string& nonTerminalName);
