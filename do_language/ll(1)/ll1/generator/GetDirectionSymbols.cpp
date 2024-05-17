@@ -23,16 +23,9 @@ std::set<std::string> GetDirectionSymbolsAfterNonTerminal(const Rule& rule, cons
         it++;
         if (it == rule.rightPart.end())
         {
-            std::vector<Rule> currentRules = GetRulesWithNonterminal(rules, rule.nonTerminal);
-            for (const Rule& r : currentRules)
-            {
-                if (std::find(rule.rightPart.begin(), rule.rightPart.end(), r.nonTerminal) == rule.rightPart.end())
-                {
-                    std::set<std::string> symbols = GetDirectionSymbolsAfterNonTerminal(r, rule.nonTerminal, rules);
-                    directionSymbols.insert(symbols.begin(), symbols.end());
-                }
-            }
-            return directionSymbols;
+            std::set<std::string> symbols = GetDirectionSymbolsIfNonterminalInEnd(rule, rules);
+            directionSymbols.insert(symbols.begin(), symbols.end());
+            continue;
         }
         if (IsNonTerminal(*it, rules))
         {
@@ -58,6 +51,21 @@ std::set<std::string> DefineDirectionSymbolsAfterNonTerminal(const std::string& 
         directionSymbols.insert(symbols.begin(), symbols.end());
     }
 
+    return directionSymbols;
+}
+
+std::set<std::string> GetDirectionSymbolsIfNonterminalInEnd(const Rule& rule, const std::vector<Rule>& rules)
+{
+    std::set<std::string> directionSymbols;
+    std::vector<Rule> currentRules = GetRulesWithNonterminal(rules, rule.nonTerminal);
+    for (const Rule& r : currentRules)
+    {
+        if (std::find(rule.rightPart.begin(), rule.rightPart.end(), r.nonTerminal) == rule.rightPart.end())
+        {
+            std::set<std::string> symbols = GetDirectionSymbolsAfterNonTerminal(r, rule.nonTerminal, rules);
+            directionSymbols.insert(symbols.begin(), symbols.end());
+        }
+    }
     return directionSymbols;
 }
 
@@ -98,19 +106,4 @@ void DefineDirectionSymbols(std::vector<Rule>& rules)
     {
         DefineDirectionSymbols(rules);
     }
-}
-
-std::vector<Rule> GetRulesWithNonterminal(const std::vector<Rule>& rules, const std::string& nonTerminal)
-{
-    std::vector<Rule> neededRules;
-
-    for (const Rule& rule : rules)
-    {
-        if (std::find(rule.rightPart.begin(), rule.rightPart.end(), nonTerminal) != rule.rightPart.end())
-        {
-            neededRules.push_back(Rule(rule));
-        }
-    }
-
-    return neededRules;
 }

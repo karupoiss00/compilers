@@ -36,29 +36,6 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    for (const TableRow& tableRow : table)
-    {
-        cout << tableRow.symbol << endl;
-        for (const string& directionSymbol : tableRow.directionSymbols)
-        {
-            cout << directionSymbol << " ";
-        }
-        cout << endl;
-        cout << "END: " << tableRow.end << endl;
-        cout << "SHIFT: " << tableRow.shift << endl;
-        cout << "ERROR: " << tableRow.error << endl;
-        cout << "STACK: " << tableRow.stack << endl;
-        if (tableRow.pointer.has_value())
-        {
-            cout << "POINTER: " << tableRow.pointer.value() << endl;
-        }
-        else
-        {
-            cout << "POINTER: NULL" << endl;
-        }
-        cout << endl;
-    }
-
     try
     {
         Analyze(table, args->inputFileName);

@@ -27,13 +27,12 @@ TableRow ReadTableRow(const std::string& tableRowStr)
 {
     TableRow tableRow;
 
-    std::vector<std::string> splitedStr = Split(tableRowStr, ";");
+    std::vector<std::string> splitedStr = Split(tableRowStr, "\t");
 
     if (splitedStr.size() != 8)
     {
         throw std::logic_error("Incorrected quantity of parts of row");
     }
-
     tableRow.symbol = splitedStr[1];
     tableRow.directionSymbols = ReadDirectionSymbols(splitedStr[2]);
     tableRow.shift = splitedStr[3] == "+";
@@ -47,7 +46,7 @@ TableRow ReadTableRow(const std::string& tableRowStr)
 
 std::set<std::string> ReadDirectionSymbols(const std::string& directionSymbolsStr)
 {
-    std::vector<std::string> dirtectionSymbols = Split(directionSymbolsStr, ", ");
+    std::vector<std::string> dirtectionSymbols = Split(directionSymbolsStr, " \| ");
     return std::set<std::string>(dirtectionSymbols.begin(), dirtectionSymbols.end());
 }
 

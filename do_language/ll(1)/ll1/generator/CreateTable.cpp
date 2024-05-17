@@ -63,7 +63,7 @@ void AddOtherTableStrFromRightPart(const std::vector<Rule>& rules, std::vector<T
 		{
 			tableStr.directionSymbols = DefineNonTerminalDirectionSymbols(rightSymbol, rules);
 			tableStr.shift = false;
-			tableStr.stack = GetCountOfIdenticalNonterminals(rules, rightSymbol) > 1;
+			tableStr.stack = IsStack(rule, rightSymbol);//GetCountOfIdenticalNonterminals(rules, rightSymbol) > 1;
 			tableStr.end = false;
 			tableStr.pointer = GetIndexOfNonterminal(rules, rightSymbol);
 		}
@@ -96,4 +96,10 @@ std::vector<TableRow> CreateTable(const std::vector<Rule>& rules)
 	}
 
 	return table;
+}
+
+bool IsStack(const Rule& rule, const std::string& nonTerminal)
+{
+	size_t lastIndex = rule.rightPart.size() - 1;
+	return rule.rightPart[lastIndex] != nonTerminal;
 }

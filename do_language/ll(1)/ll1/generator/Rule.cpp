@@ -25,3 +25,18 @@ std::optional<size_t> GetIndexOfNonterminal(const std::vector<Rule>& rules, cons
 
 	return std::nullopt;
 }
+
+std::vector<Rule> GetRulesWithNonterminal(const std::vector<Rule>& rules, const std::string& nonTerminal)
+{
+	std::vector<Rule> neededRules;
+
+	for (const Rule& rule : rules)
+	{
+		if (std::find(rule.rightPart.begin(), rule.rightPart.end(), nonTerminal) != rule.rightPart.end())
+		{
+			neededRules.push_back(Rule(rule));
+		}
+	}
+
+	return neededRules;
+}

@@ -24,3 +24,26 @@ std::vector<std::string> Split(const std::string& str, const std::string& separa
 
     return strs;
 }
+
+inline void ltrim(std::string& s, unsigned char removedChar)
+{
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [removedChar](unsigned char ch) {
+        return ch != removedChar;
+        }));
+}
+
+inline void rtrim(std::string& s, unsigned char removedChar)
+{
+    s.erase(std::find_if(s.rbegin(), s.rend(), [removedChar](unsigned char ch) {
+        return !std::isspace(ch);
+        }).base(), s.end());
+}
+
+std::string RemoveSpacesInBeginAndEndOfWord(const std::string& str, unsigned char removedChar)
+{
+    std::string newStr = str;
+    ltrim(newStr, removedChar);
+    rtrim(newStr, removedChar);
+
+    return newStr;
+}
