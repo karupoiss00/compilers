@@ -3,16 +3,18 @@
 void PrintDirectionSymbols(const TableRow& tableStr, std::ostream& outputFile)
 {
     int index = 0;
-    for (const std::string& symbol : tableStr.directionSymbols)
+    //outputFile << "\"";
+    for (const std::string& directionSymbol : tableStr.directionSymbols)
     {
-        outputFile << symbol;
+        std::string symbol = directionSymbol == ";" ? ".," : directionSymbol;
+        outputFile << directionSymbol;
         if (index != tableStr.directionSymbols.size() - 1)
         {
-            outputFile << ", ";
+            outputFile << " \| ";
         }
         index++;
     }
-    outputFile << ";";
+    outputFile << "\t";
 }
 
 void PrintBoolValue(const bool value, std::ostream& outputFile)
@@ -25,7 +27,7 @@ void PrintBoolValue(const bool value, std::ostream& outputFile)
     {
         outputFile << "-";
     }
-    outputFile << ";";
+    outputFile << "\t";
 }
 
 void PrintPointer(const std::optional<size_t> pointer, std::ostream& outputFile)
@@ -38,18 +40,19 @@ void PrintPointer(const std::optional<size_t> pointer, std::ostream& outputFile)
     {
         outputFile << "NULL";
     }
-    outputFile << ";";
+    outputFile << "\t";
 }
 
 void PrintTable(const std::vector<TableRow>& table, std::ostream& outputFile)
 {
-    outputFile << "index;symbol;directionSymbols;shift;error;pointer;stack;end" << std::endl;
+    outputFile << "index\tsymbol\tdirectionSymbols\tshift\terror\tpointer\tstack\tend" << std::endl;
 
     for (size_t i = 0; i < table.size(); i++)
     {
         const TableRow& tableStr = table[i];
-        outputFile << i + 1 << ";"
-            << tableStr.symbol << ";";
+        std::string symbol = tableStr.symbol == ";" ? "\";\"" : tableStr.symbol;
+        outputFile << i + 1 << "\t"
+            << symbol << "\t";
         PrintDirectionSymbols(tableStr, outputFile);
         PrintBoolValue(tableStr.shift, outputFile);
         PrintBoolValue(tableStr.error, outputFile);

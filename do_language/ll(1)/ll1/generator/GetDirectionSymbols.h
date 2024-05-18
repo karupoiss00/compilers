@@ -8,4 +8,6 @@ std::set<std::string> GetDirectionSymbolsAfterNonTerminal(const Rule& rule, cons
 
 std::set<std::string> DefineDirectionSymbolsAfterNonTerminal(const std::string& nonTerminalName, const std::vector<Rule>& rules);
 
+std::set<std::string> GetDirectionSymbolsIfNonterminalInEnd(const Rule& rule, const std::vector<Rule>& rules);
+
 void DefineDirectionSymbols(std::vector<Rule>& rules);
