@@ -18,22 +18,22 @@
     <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="CreateTable.cpp">
+    <ClCompile Include="Rule.cpp">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
-    <ClCompile Include="GetDirectionSymbols.cpp">
-      <Filter>Файлы ресурсов</Filter>
-    </ClCompile>
-    <ClCompile Include="PrintTable.cpp">
+    <ClCompile Include="StringHelpers.cpp">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
     <ClCompile Include="ReadGrammar.cpp">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
-    <ClCompile Include="Rule.cpp">
+    <ClCompile Include="GetDirectionSymbols.cpp">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
-    <ClCompile Include="StringHelpers.cpp">
+    <ClCompile Include="CreateTable.cpp">
+      <Filter>Файлы ресурсов</Filter>
+    </ClCompile>
+    <ClCompile Include="PrintTable.cpp">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
   </ItemGroup>
@@ -44,19 +44,22 @@
     <ClInclude Include="Rule.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="CreateTable.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="PrintTable.h">
+    <ClInclude Include="StringHelpers.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="GetDirectionSymbols.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="StringHelpers.h">
+    <ClInclude Include="CreateTable.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="TableRow.h">
+    <ClInclude Include="Table.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Symbol.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="PrintTable.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
