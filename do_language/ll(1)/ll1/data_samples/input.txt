@@ -1,1 +1,1 @@
-VAR INT id , id ; #
+VAR BOOL id , id ; #

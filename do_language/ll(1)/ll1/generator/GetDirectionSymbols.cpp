@@ -65,6 +65,8 @@ std::set<std::string> GetDirectionSymbolsIfNonterminalInEnd(const Rule& rule, co
             std::set<std::string> symbols = GetDirectionSymbolsAfterNonTerminal(r, rule.nonTerminal, rules);
             directionSymbols.insert(symbols.begin(), symbols.end());
         }
+        std::set<std::string> symbols = GetDirectionSymbolsAfterNonTerminal(r, r.nonTerminal, rules);
+        directionSymbols.insert(symbols.begin(), symbols.end());
     }
     return directionSymbols;
 }

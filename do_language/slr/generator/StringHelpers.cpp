@@ -42,5 +42,7 @@ inline void rtrim(std::string& s)
 std::string RemoveSpacesInBeginAndEndOfWord(const std::string& str)
 {
     std::string newStr = str;
+    ltrim(newStr);
+    rtrim(newStr);
     return newStr;
 }
