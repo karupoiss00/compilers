@@ -59,26 +59,36 @@ void AddOtherTableStrFromRightPart(const std::vector<Rule>& rules, std::vector<T
 		tableStr.symbol = rightSymbol;
 		bool isNonTerminal = IsNonTerminal(rightSymbol, rules);
 		tableStr.error = true;
+		tableStr.end = false;
 		if (isNonTerminal)
 		{
 			tableStr.directionSymbols = DefineNonTerminalDirectionSymbols(rightSymbol, rules);
 			tableStr.shift = false;
-			tableStr.stack = IsStack(rule, rightSymbol);//GetCountOfIdenticalNonterminals(rules, rightSymbol) > 1;
-			tableStr.end = false;
+			tableStr.stack = IsStack(rule, i);
 			tableStr.pointer = GetIndexOfNonterminal(rules, rightSymbol);
 		}
 		else
 		{
 			std::set<std::string> directionSymbols = GetTerminalDirectionSymbols(rules, rightSymbol, rule.nonTerminal);
 			tableStr.directionSymbols.insert(directionSymbols.begin(), directionSymbols.end());
-			tableStr.end = rightSymbol == END_SYMBOL;
 			tableStr.shift = rightSymbol != END_SYMBOL && rightSymbol != EMPTY_SYMBOL;
+			tableStr.end = rightSymbol == END_SYMBOL;
 			bool isEndOfRule = i == rule.rightPart.size() - 1;
 			if (!isEndOfRule)
 			{
 				tableStr.pointer = table.size() + 1;
 			}
 		}
+		table.push_back(tableStr);
+	}
+	if (rule.hasEnd && rule.rightPart[rule.rightPart.size() - 1] != END_SYMBOL)
+	{
+		TableRow tableStr;
+		tableStr.directionSymbols.insert(END_SYMBOL);
+		tableStr.symbol = END_SYMBOL;
+		tableStr.error = true;
+		tableStr.shift = true;
+		tableStr.end = true;
 		table.push_back(tableStr);
 	}
 }
@@ -98,8 +108,12 @@ std::vector<TableRow> CreateTable(const std::vector<Rule>& rules)
 	return table;
 }
 
-bool IsStack(const Rule& rule, const std::string& nonTerminal)
+bool IsStack(const Rule& rule, const size_t index)
 {
 	size_t lastIndex = rule.rightPart.size() - 1;
-	return rule.rightPart[lastIndex] != nonTerminal;
+	if (lastIndex != index)
+	{
+		return true;
+	}
+	return rule.hasEnd;
 }

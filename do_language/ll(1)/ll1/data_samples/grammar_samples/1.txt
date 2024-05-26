@@ -1,5 +1,4 @@
-S -> E #
-E -> T A
+E -> T A #
 A -> e
 A -> + T A
 T -> F B

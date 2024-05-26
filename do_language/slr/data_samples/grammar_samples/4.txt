@@ -1,0 +1,5 @@
+Z -> S #
+S -> A B
+A -> a
+A -> A c
+B -> b A

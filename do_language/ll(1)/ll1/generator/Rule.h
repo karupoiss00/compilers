@@ -12,6 +12,14 @@ struct Rule
     std::string nonTerminal;
     std::vector<std::string> rightPart;
     std::set<std::string> directionSymbols;
+    bool hasEnd = false;
+
+    bool operator==(const Rule& other)
+    {
+        return this->nonTerminal == other.nonTerminal
+            && this->rightPart == other.rightPart
+            && this->directionSymbols == other.directionSymbols;
+    }
 };
 
 bool IsNonTerminal(const std::string& str, const std::vector<Rule>& rules);

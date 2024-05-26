@@ -39,6 +39,25 @@ int main(int argc, char* argv[])
     }
 
     vector<Rule> rules = ReadGrammar(inputFile);
+
+    for (const Rule& rule : rules)
+    {
+        std::cout << rule.nonTerminal << " -> ";
+        for (const std::string& s : rule.rightPart)
+        {
+            std::cout << s << " ";
+        }
+        if (!rule.directionSymbols.empty())
+        {
+            std::cout << "/ ";
+        }
+        for (const std::string s : rule.directionSymbols)
+        {
+            std::cout << s << " ";
+        }
+        std::cout << std::endl;
+    }
+
     vector<TableRow> table = CreateTable(rules);
     PrintTable(table, outputFile);
     return 0;
