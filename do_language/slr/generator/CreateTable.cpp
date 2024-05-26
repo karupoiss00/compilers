@@ -27,7 +27,10 @@ std::set<std::string> GetAllSymbols(const std::vector<Rule>& grammar)
 	return symbols;
 }
 
-void AddDirectionSymbols(TableStr& str, const std::vector<Symbol>& directionSymbols)
+void AddDirectionSymbolsOfNonTerminal()
+{}
+
+void AddDirectionSymbols(TableStr& str, const std::vector<Symbol>& directionSymbols, const std::vector<Rule>& grammar)
 {
 	for (const Symbol& symbol : directionSymbols)
 	{
@@ -98,7 +101,7 @@ void DefineNextSymbols(const std::vector<Rule>& grammar, const SymbolPosition& p
 		{
 			directionSymbols.insert(directionSymbols.end(), r.directionSymbols.begin(), r.directionSymbols.end());
 		}
-		AddDirectionSymbols(str, directionSymbols);
+		AddDirectionSymbols(str, directionSymbols, grammar);
 		
 	}
 	if (symbol.name == END_SYMBOL)
@@ -106,8 +109,29 @@ void DefineNextSymbols(const std::vector<Rule>& grammar, const SymbolPosition& p
 		AddEndDirectionSymbols(str, { symbol }, symbol.position->numOfRule);
 		return;
 	}
-	AddDirectionSymbols(str, { symbol });
+	AddDirectionSymbols(str, { symbol }, grammar);
 }
+
+/*std::vector<Symbol> DefineNonTerminalNextSymbols(const std::string& nonTerminalName, const std::vector<Rule>& grammar)
+{
+	std::vector<Symbol> nextSymbols;
+	std::vector<Rule> neededRules = GetRulesWithNonterminal(grammar, nonTerminalName);
+
+	for (const Rule& rule : neededRules)
+	{
+		auto it = std::find(rule.rightPart.begin(), rule.rightPart.end(), nonTerminalName);
+		while (it != rule.rightPart.end())
+		{
+			it++;
+			if (it == rule.rightPart.end())
+			{
+
+			}
+		}
+	}
+
+	return nextSymbols;
+}*/
 
 void AddInfoInString(TableStr& str, const std::vector<Symbol>& symbols, const std::vector<Rule>& grammar)
 {
@@ -121,7 +145,7 @@ void AddInfoInString(TableStr& str, const std::vector<Symbol>& symbols, const st
 		bool isTheEndOfRule = grammar[s.position->numOfRule].rightPart.size() - 1 == s.position->numOfRightPart;
 		if (isTheEndOfRule)
 		{
-			std::vector<Symbol> directionSymbols = DefineDirectionSymbolsAfterNonTerminal(grammar[s.position->numOfRule].nonTerminal, grammar);
+			std::vector<Symbol> directionSymbols = DefineDirectionSymbolsAfterNonTerminal({}, grammar[s.position->numOfRule].nonTerminal, grammar);
 			AddEndDirectionSymbols(str, directionSymbols, s.position->numOfRule);
 			continue;
 		}
@@ -162,7 +186,7 @@ Table CreateTable(const std::vector<Rule>& grammar)
 	Symbol symbolOfFirstStr;
 	symbolOfFirstStr.name = grammar[0].nonTerminal;
 	firstStr.symbols.push_back(symbolOfFirstStr);
-	AddDirectionSymbols(firstStr, grammar[0].directionSymbols);
+	AddDirectionSymbols(firstStr, grammar[0].directionSymbols, grammar);
 
 	Symbol s;
 	s.name = "OK";

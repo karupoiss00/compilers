@@ -29,7 +29,7 @@ void PrintNextSymbols(const TableStr& str, const std::set<std::string>& symbols,
 	{
 		if (str.nextSymbols.find(s) == str.nextSymbols.end())
 		{
-			output << "-\t";
+			output << "\t";
 		}
 		else
 		{

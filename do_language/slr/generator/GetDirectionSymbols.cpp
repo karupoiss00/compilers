@@ -30,7 +30,7 @@ std::vector<Symbol> DefineNonTerminalDirectionSymbols(const std::string& nonTerm
     return directionSymbols;
 }
 
-std::vector<Symbol> GetDirectionSymbolsAfterNonTerminal(const Rule& rule, size_t numOfRule, const std::string& nonTerminalName, const std::vector<Rule>& rules)
+std::vector<Symbol> GetDirectionSymbolsAfterNonTerminal(const Rule& rule, size_t numOfRule, const std::string& nonTerminalName, const std::vector<Rule>& rules, std::set<size_t> checkedRulesIndexes)
 {
     std::vector<Symbol> directionSymbols;
     auto it = std::find(rule.rightPart.begin(), rule.rightPart.end(), nonTerminalName);
@@ -39,12 +39,11 @@ std::vector<Symbol> GetDirectionSymbolsAfterNonTerminal(const Rule& rule, size_t
         it++;
         if (it == rule.rightPart.end())
         {
-            std::vector<Symbol> symbols = GetDirectionSymbolsIfNonterminalInEnd(rule, rules);
+            std::vector<Symbol> symbols = DefineDirectionSymbolsAfterNonTerminal(checkedRulesIndexes, rule.nonTerminal, rules);
             directionSymbols.insert(directionSymbols.end(), symbols.begin(), symbols.end());
             continue;
         }
-        if (IsNonTerminal(*it, rules))
-        {
+        if (IsNonTerminal(*it, rules))     {
             std::vector<Symbol> symbols = DefineNonTerminalDirectionSymbols(*it, rules);
             directionSymbols.insert(directionSymbols.end(), symbols.begin(), symbols.end());
         }
@@ -61,37 +60,40 @@ std::vector<Symbol> GetDirectionSymbolsAfterNonTerminal(const Rule& rule, size_t
 }
 
 //Вызывается в случае, если нетерминал возвращает пустой символ и нужно узнать последующие направляющие символы
-std::vector<Symbol> DefineDirectionSymbolsAfterNonTerminal(const std::string& nonTerminalName, const std::vector<Rule>& rules)
+std::vector<Symbol> DefineDirectionSymbolsAfterNonTerminal(std::set<size_t> checkedRulesIndexes, const std::string& nonTerminalName, const std::vector<Rule>& rules)
 {
     std::vector<Symbol> directionSymbols;
     for (size_t i = 0; i < rules.size(); i++)
     {
-        const Rule& rule = rules[i];
-        std::vector<Symbol> symbols = GetDirectionSymbolsAfterNonTerminal(rule, i, nonTerminalName, rules);
-        directionSymbols.insert(directionSymbols.end(), symbols.begin(), symbols.end());
-    }
-
-    return directionSymbols;
-}
-
-std::vector<Symbol> GetDirectionSymbolsIfNonterminalInEnd(const Rule& rule, const std::vector<Rule>& rules)
-{
-    std::vector<Symbol> directionSymbols;
-    std::vector<Rule> currentRules = GetRulesWithNonterminal(rules, rule.nonTerminal);
-    for (size_t i = 0; i < currentRules.size(); i++)
-    {
-        const Rule& r = currentRules[i];
-        if (std::find(rule.rightPart.begin(), rule.rightPart.end(), r.nonTerminal) == rule.rightPart.end())
+        if (checkedRulesIndexes.find(i) != checkedRulesIndexes.end())
         {
-            std::vector<Symbol> symbols = GetDirectionSymbolsAfterNonTerminal(r, i, rule.nonTerminal, rules);
-            directionSymbols.insert(directionSymbols.end(), symbols.begin(), symbols.end());
             continue;
         }
-        std::vector<Symbol> symbols = GetDirectionSymbolsAfterNonTerminal(r, i, r.nonTerminal, rules);
+        std::set<size_t> newCheckedRulesIndexes = checkedRulesIndexes;
+        newCheckedRulesIndexes.insert(i);
+        const Rule& rule = rules[i];
+        std::vector<Symbol> symbols = GetDirectionSymbolsAfterNonTerminal(rule, i, nonTerminalName, rules, newCheckedRulesIndexes);
         directionSymbols.insert(directionSymbols.end(), symbols.begin(), symbols.end());
     }
+
     return directionSymbols;
 }
+
+//std::vector<Symbol> GetDirectionSymbolsIfNonterminalInEnd(const Rule& rule, const std::vector<Rule>& rules)
+//{
+//    std::vector<Symbol> directionSymbols;
+//    std::vector<Rule> currentRules = GetRulesWithNonterminal(rules, rule.nonTerminal);
+//    for (size_t i = 0; i < currentRules.size(); i++)
+//    {
+//        const Rule& r = currentRules[i];
+//        if (std::find(rule.rightPart.begin(), rule.rightPart.end(), r.nonTerminal) == rule.rightPart.end())
+//        {
+//            std::vector<Symbol> symbols = GetDirectionSymbolsAfterNonTerminal(r, i, rule.nonTerminal, rules);
+//            directionSymbols.insert(directionSymbols.end(), symbols.begin(), symbols.end());
+//        }
+//    }
+//    return directionSymbols;
+//}
 
 void DefineDirectionSymbols(std::vector<Rule>& rules)
 {
@@ -105,14 +107,14 @@ void DefineDirectionSymbols(std::vector<Rule>& rules)
         }
         if (rule.rightPart.size() == 1 && rule.rightPart[0] == EMPTY_SYMBOL)
         {
-            std::vector<Symbol> directionSymbols = DefineDirectionSymbolsAfterNonTerminal(rule.nonTerminal, rules);
-            hasChanges = AddNewSymbols(rule.directionSymbols, directionSymbols);
+            std::vector<Symbol> directionSymbols = DefineDirectionSymbolsAfterNonTerminal({}, rule.nonTerminal, rules);
+            hasChanges = hasChanges ? true : AddNewSymbols(rule.directionSymbols, directionSymbols);
             continue;
         }
         if (IsNonTerminal(rule.rightPart[0], rules))
         {
             std::vector<Symbol> directionSymbols = DefineNonTerminalDirectionSymbols(rule.rightPart[0], rules);
-            hasChanges = AddNewSymbols(rule.directionSymbols, directionSymbols);
+            hasChanges = hasChanges ? true : AddNewSymbols(rule.directionSymbols, directionSymbols);
         }
         size_t sizeBefore = rule.directionSymbols.size();
         Symbol symbol;
@@ -121,7 +123,7 @@ void DefineDirectionSymbols(std::vector<Rule>& rules)
         position.numOfRule = i;
         position.numOfRightPart = 0;
         symbol.position = position;
-        hasChanges = AddNewSymbols(rule.directionSymbols, { symbol });
+        hasChanges = hasChanges ? true : AddNewSymbols(rule.directionSymbols, { symbol });
     }
 
     if (hasChanges)

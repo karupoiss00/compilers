@@ -13,6 +13,6 @@ std::set<std::string> GetTerminalDirectionSymbols(const std::vector<Rule>& rules
 
 void AddOtherTableStrFromRightPart(const std::vector<Rule>& rules, std::vector<TableRow>& table, const Rule& rule);
 
-bool IsStack(const Rule& rule, const std::string& nonTerminal);
+bool IsStack(const Rule& rule, const size_t index);
 
 std::vector<TableRow> CreateTable(const std::vector<Rule>& rules);

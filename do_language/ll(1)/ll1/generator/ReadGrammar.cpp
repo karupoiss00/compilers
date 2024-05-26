@@ -10,6 +10,10 @@ void ReadRightPart(const std::string& rightPartStr, const std::string& nonTermin
         rule.nonTerminal = nonTerminal;
         std::vector<std::string> partOfRule = Split(ruleStr, " ");
         rule.rightPart = partOfRule;
+        if (rules.empty())
+        {
+            rule.hasEnd = true;
+        }
         rules.push_back(rule);
     }
 }

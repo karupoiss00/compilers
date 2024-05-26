@@ -11,7 +11,7 @@ void AddSymbolsFromRightPart(const Rule& rule, std::set<std::string>& symbols);
 
 std::set<std::string> GetAllSymbols(const std::vector<Rule>& grammar);
 
-void AddDirectionSymbols(TableStr& str, const std::vector<Symbol>& directionSymbols);
+void AddDirectionSymbols(TableStr& str, const std::vector<Symbol>& directionSymbols, const std::vector<Rule>& grammar);
 
 void AddEndDirectionSymbols(TableStr& str, const std::vector<Symbol>& directionSymbols, size_t numOfRule);
 
