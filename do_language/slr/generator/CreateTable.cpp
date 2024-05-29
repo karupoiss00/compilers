@@ -171,6 +171,16 @@ Table CreateTable(const std::vector<Rule>& grammar)
 	s.name = "OK";
 
 	firstStr.nextSymbols[grammar[0].nonTerminal].push_back(s);
+
+	for (size_t i = 1; i < grammar.size(); i++)
+	{
+		const Rule& r = grammar[i];
+		if (r.nonTerminal == symbolOfFirstStr.name)
+		{
+			AddDirectionSymbols(firstStr, r.directionSymbols, grammar);
+		}
+	}
+
 	table.strings.push_back({ firstStr });
 	AddNewStrings(table, 0, grammar);
 

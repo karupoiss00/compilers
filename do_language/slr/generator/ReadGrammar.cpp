@@ -29,7 +29,7 @@ std::vector<std::string> GetRightPartWithoutNonterminal(const Rule& rule, const 
     return newRightPart;
 }
 
-void AddAlternativeRulesWithoutEmptyRule(const std::vector<Rule>& rules, std::vector<Rule>& newRules, const std::string& nonTerminal)
+void AddAlternativeRulesWithoutEmptyRule(const std::vector<Rule>& rules, std::vector<Rule>& newRules, const std::string& nonTerminal, bool& hasChanges)
 {
     const std::vector<Rule> rulesWithEmptyRule = GetRulesWithNonterminal(rules, nonTerminal);
 
@@ -37,7 +37,7 @@ void AddAlternativeRulesWithoutEmptyRule(const std::vector<Rule>& rules, std::ve
     {
         if (r.rightPart.size() == 1)
         {
-            AddAlternativeRulesWithoutEmptyRule(rules, newRules, r.nonTerminal);
+            AddAlternativeRulesWithoutEmptyRule(rules, newRules, r.nonTerminal, hasChanges);
             continue;
         }
         Rule newRule;
@@ -46,6 +46,7 @@ void AddAlternativeRulesWithoutEmptyRule(const std::vector<Rule>& rules, std::ve
         if (std::find(rules.begin(), rules.end(), newRule) == rules.end()
             && std::find(newRules.begin(), newRules.end(), newRule) == newRules.end())
         {
+            hasChanges = true;
             newRules.push_back(newRule);
         }
     }
@@ -59,13 +60,36 @@ void RemoveRulesWithEmptySymbol(std::vector<Rule>& rules)
     {
         if (rule.rightPart.size() == 1 && rule.rightPart[0] == EMPTY_SYMBOL)
         {
-            AddAlternativeRulesWithoutEmptyRule(rules, newRules, rule.nonTerminal);
             continue;
         }
         newRules.push_back(rule);
     }
 
     rules = newRules;
+}
+
+void FindAlternativeRulesWithoutEmptySymbol(std::vector<Rule>& rules)
+{
+    std::vector<Rule> newRules;
+    bool hasChanges = false;
+
+    for (const Rule& rule : rules)
+    {
+        if (rule.rightPart.size() == 1 && rule.rightPart[0] == EMPTY_SYMBOL)
+        {
+            newRules.push_back(rule);
+            AddAlternativeRulesWithoutEmptyRule(rules, newRules, rule.nonTerminal, hasChanges);
+            continue;
+        }
+        newRules.push_back(rule);
+    }
+
+    rules = newRules;
+
+    if (hasChanges)
+    {
+        FindAlternativeRulesWithoutEmptySymbol(rules);
+    }
 }
 
 std::vector<Rule> ReadGrammar(std::istream& inputFile)
@@ -79,6 +103,7 @@ std::vector<Rule> ReadGrammar(std::istream& inputFile)
         ReadRightPart(rule[1], nonTerminal, rules);
     }
 
+    FindAlternativeRulesWithoutEmptySymbol(rules);
     RemoveRulesWithEmptySymbol(rules);
     DefineDirectionSymbols(rules);
 

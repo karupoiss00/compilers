@@ -1,6 +1,7 @@
-Z -> S #
-S -> S + A
-S -> S * A
-S -> 5
-A -> ( A )
-A -> i
+S -> A B C #
+A -> a A
+A -> e
+B -> b B
+B -> e
+C -> c C
+C -> e

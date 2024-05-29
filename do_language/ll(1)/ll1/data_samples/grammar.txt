@@ -1,10 +1,7 @@
-S -> E #
-E -> T A
+S -> A B C #
+A -> a A
 A -> e
-A -> + T A
-T -> F B
+B -> b B
 B -> e
-B -> * F B
-F -> - F
-F -> ( E )
-F -> a
+C -> c C
+C -> e
