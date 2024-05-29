@@ -49,10 +49,8 @@ std::vector<Symbol> GetDirectionSymbolsAfterNonTerminal(const Rule& rule, size_t
         }
         Symbol symbol;
         symbol.name = *it;
-        SymbolPosition position;
-        position.numOfRule = numOfRule;
-        position.numOfRightPart = it - rule.rightPart.begin();
-        symbol.position = position;
+        symbol.numOfRule = numOfRule;
+        symbol.numOfRightPart = it - rule.rightPart.begin();
         directionSymbols.insert(directionSymbols.end(), symbol);
         it = std::find(it, rule.rightPart.end(), nonTerminalName);
     }
@@ -79,22 +77,6 @@ std::vector<Symbol> DefineDirectionSymbolsAfterNonTerminal(std::set<size_t> chec
     return directionSymbols;
 }
 
-//std::vector<Symbol> GetDirectionSymbolsIfNonterminalInEnd(const Rule& rule, const std::vector<Rule>& rules)
-//{
-//    std::vector<Symbol> directionSymbols;
-//    std::vector<Rule> currentRules = GetRulesWithNonterminal(rules, rule.nonTerminal);
-//    for (size_t i = 0; i < currentRules.size(); i++)
-//    {
-//        const Rule& r = currentRules[i];
-//        if (std::find(rule.rightPart.begin(), rule.rightPart.end(), r.nonTerminal) == rule.rightPart.end())
-//        {
-//            std::vector<Symbol> symbols = GetDirectionSymbolsAfterNonTerminal(r, i, rule.nonTerminal, rules);
-//            directionSymbols.insert(directionSymbols.end(), symbols.begin(), symbols.end());
-//        }
-//    }
-//    return directionSymbols;
-//}
-
 void DefineDirectionSymbols(std::vector<Rule>& rules)
 {
     bool hasChanges = false;
@@ -119,10 +101,8 @@ void DefineDirectionSymbols(std::vector<Rule>& rules)
         size_t sizeBefore = rule.directionSymbols.size();
         Symbol symbol;
         symbol.name = rule.rightPart[0];
-        SymbolPosition position; 
-        position.numOfRule = i;
-        position.numOfRightPart = 0;
-        symbol.position = position;
+        symbol.numOfRule = i;
+        symbol.numOfRightPart = 0;
         hasChanges = hasChanges ? true : AddNewSymbols(rule.directionSymbols, { symbol });
     }
 

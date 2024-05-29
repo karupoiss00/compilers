@@ -12,6 +12,4 @@ std::vector<Symbol> GetDirectionSymbolsAfterNonTerminal(const Rule& rule, size_t
 
 std::vector<Symbol> DefineDirectionSymbolsAfterNonTerminal(std::set<size_t> checkedRulesIndexes, const std::string& nonTerminalName, const std::vector<Rule>& rules);
 
-//std::vector<Symbol> GetDirectionSymbolsIfNonterminalInEnd(const Rule& rule, const std::vector<Rule>& rules);
-
 void DefineDirectionSymbols(std::vector<Rule>& rules);

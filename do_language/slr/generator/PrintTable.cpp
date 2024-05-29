@@ -5,7 +5,7 @@ void PrintNamesOfColumns(const Table& table, std::ostream& output)
 	output << "\t";
 	for (const std::string s : table.symbols)
 	{
-		output << "\"" << s << "\"\t";
+		output << "\'" << s << "\'\t";
 	}
 	output << std::endl;
 }
