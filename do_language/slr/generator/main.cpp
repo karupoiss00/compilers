@@ -49,10 +49,15 @@ int main(int argc, char* argv[])
         for (const Symbol& s : rule.directionSymbols)
         {
             cout << s.name;
-            if (s.position.has_value())
+            if (s.numOfRule.has_value())
             {
-                cout << s.position.value().numOfRule + 1 << s.position.value().numOfRightPart + 1 << " | ";
+                cout << s.numOfRule.value() + 1;
             }
+            if (s.numOfRule.has_value())
+            {
+                cout << s.numOfRightPart.value() + 1;
+            }
+            cout << " | ";
         }
         cout << endl;
     }
