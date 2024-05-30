@@ -116,7 +116,7 @@ void AddInfoInString(TableStr& str, const std::vector<Symbol>& symbols, const st
 {
 	for (const Symbol& s : symbols)
 	{
-		if (!s.numOfRule.has_value() || !s.numOfRightPart.has_value())
+		if (!s.numOfRule.has_value() || !s.numOfRightPart.has_value() || s.name == END_SYMBOL_IN_TABLE)
 		{
 			continue;
 		}
