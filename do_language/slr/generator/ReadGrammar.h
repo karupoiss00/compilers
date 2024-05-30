@@ -12,8 +12,8 @@ void ReadRightPart(const std::string& rightPartStr, const std::string& nonTermin
 
 std::vector<std::string> GetRightPartWithoutNonterminal(const Rule& rule, const std::string& nonTerminal);
 
-void AddAlternativeRulesWithoutEmptyRule(const std::vector<Rule>& rules, std::vector<Rule>& newRules, const std::string& nonTerminal);
+void AddAlternativeRulesWithoutEmptyRule(const std::vector<Rule>& rules, std::vector<Rule>& newRules, const std::string& nonTerminal, bool& hasChanges);
 
-void RemoveRulesWithEmptySymbol(std::vector<Rule>& rules);
+void FindAlternativeRulesWithoutEmptySymbol(std::vector<Rule>& rules);
 
 std::vector<Rule> ReadGrammar(std::istream& inputFile);
