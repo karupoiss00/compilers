@@ -25,3 +25,4 @@ struct Rule
 bool IsNonTerminal(const std::string& str, const std::vector<Rule>& rules);
 std::optional<size_t> GetIndexOfNonterminal(const std::vector<Rule>& rules, const std::string& nonTerminal);
 std::vector<Rule> GetRulesWithNonterminal(const std::vector<Rule>& rules, const std::string& nonTerminal);
+std::vector<Rule> GetRulesOfNonterminal(const std::vector<Rule>& rules, const std::string& nonTerminal);

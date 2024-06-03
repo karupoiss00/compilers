@@ -10,7 +10,7 @@ void PrintDirectionSymbols(const TableRow& tableStr, std::ostream& outputFile)
         outputFile << directionSymbol;
         if (index != tableStr.directionSymbols.size() - 1)
         {
-            outputFile << " \| ";
+            outputFile << " | ";
         }
         index++;
     }
