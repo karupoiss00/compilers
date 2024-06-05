@@ -128,22 +128,11 @@ void Analyze(const Table& table, const std::vector<Rule>& grammar, std::istream&
 			size_t rowIndex = nextState[0].numOfRule.value();
 			Rule row = grammar[rowIndex];
 
-			for (std::string& token : tokensStack)
-			{
-				std::cout << token << " ";
-			}
-			std::cout << std::endl << std::endl;
-			std::vector<std::string> sliced = {""};
+			auto end = row.rightPart.back() == "#"
+				? tokensStack.begin() + (row.rightPart.size() - 1)
+				: tokensStack.begin() + row.rightPart.size();
 
-			if (row.rightPart.back() == "#")
-			{
-				std::copy(tokensStack.begin(), tokensStack.end() - 1, sliced.begin());
-			}
-			else
-			{
-				std::copy(tokensStack.begin(), tokensStack.end(), sliced.begin());
-
-			}
+			std::vector<std::string> sliced(tokensStack.begin(), end);
 
 			std::reverse(sliced.begin(), sliced.end());
 
@@ -152,8 +141,14 @@ void Analyze(const Table& table, const std::vector<Rule>& grammar, std::istream&
 
 			if (symbol == "#" && row.rightPart == slicedWithEnd || row.rightPart == sliced)
 			{
-				stateStack.erase(stateStack.begin(), stateStack.begin() + row.rightPart.size());
-				tokensStack.erase(tokensStack.begin(), tokensStack.begin() + row.rightPart.size());;
+				auto stateEnd = row.rightPart.back() == "#"
+					? stateStack.begin() + (row.rightPart.size() - 1)
+					: stateStack.begin() + row.rightPart.size();
+				auto tokensEnd = row.rightPart.back() == "#"
+					? tokensStack.begin() + (row.rightPart.size() - 1)
+					: tokensStack.begin() + row.rightPart.size();
+				stateStack.erase(stateStack.begin(), stateEnd);
+				tokensStack.erase(tokensStack.begin(), tokensEnd);
 
 				AppendState(row.nonTerminal);
 				if (stateStack.size() > 0)
