@@ -6,4 +6,3 @@ T -> F
 F -> - F
 F -> ( E )
 F -> id
-F -> num
