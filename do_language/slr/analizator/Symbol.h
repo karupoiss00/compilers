@@ -19,10 +19,10 @@ struct Symbol
 
 inline std::ostream& operator<<(std::ostream& stream, const Symbol& symbol)
 {
-	stream << symbol.name << "·";
+	stream << symbol.name;
 	if (symbol.numOfRule.has_value())
 	{
-		stream << symbol.numOfRule.value() + 1;
+		stream << "·" << symbol.numOfRule.value() + 1;
 	}
 	if (symbol.numOfRightPart.has_value())
 	{

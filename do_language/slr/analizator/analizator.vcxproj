@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -131,15 +131,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Analyzator.cpp" />
     <ClCompile Include="GetDirectionSymbols.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PrintTable.cpp" />
     <ClCompile Include="ReadGrammar.cpp" />
     <ClCompile Include="ReadTable.cpp" />
     <ClCompile Include="Rule.cpp" />
     <ClCompile Include="StringHelpers.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Analizator.h" />
     <ClInclude Include="GetDirectionSymbols.h" />
+    <ClInclude Include="PrintTable.h" />
     <ClInclude Include="ReadGrammar.h" />
     <ClInclude Include="ReadTable.h" />
     <ClInclude Include="Rule.h" />

@@ -28,7 +28,7 @@ Table ReadTable(const std::string& tableFileName)
 std::set<std::string> GetSymbols(const std::string& str, std::map<size_t, std::string>& numOfColumns)
 {
     std::set<std::string> neededSymbols;
-    std::vector<std::string> symbols = Split(str, "\t");
+    std::vector<std::string> symbols = SplitWithEmptyStrings(str, "\t");
     for (size_t i = 0; i < symbols.size(); i++)
     {   
         if (symbols[i].length() != 0)
@@ -45,7 +45,7 @@ TableStr ReadTableStr(const std::string& str, const std::map<size_t, std::string
 {
     TableStr tableStr;
 
-    std::vector<std::string> columns = Split(str, "\t");
+    std::vector<std::string> columns = SplitWithEmptyStrings(str, "\t");
     tableStr.symbols = GetState(columns[0]);
 
     for (size_t i = 1; i < columns.size(); i++)
@@ -55,7 +55,7 @@ TableStr ReadTableStr(const std::string& str, const std::map<size_t, std::string
             continue;
         }
         std::vector<Symbol> state = GetState(columns[i]);
-        std::string symbol = numOfColumns.at(i);
+        std::string symbol = RemoveSubstringInBeginAndEndOfString(numOfColumns.at(i), "\'");
         tableStr.nextSymbols[symbol] = state;
     }
 
@@ -70,10 +70,6 @@ std::vector<Symbol> GetState(const std::string& str)
 
     for (size_t i = 0; i < strSymbols.size(); i++)
     {
-        if (strSymbols[i].length() == 0)
-        {
-            continue;
-        }
         Symbol symbol;
         std::string s = RemoveSubstringInBeginAndEndOfString(strSymbols[i], "\'");
         std::vector<std::string> strS = Split(s, "·");

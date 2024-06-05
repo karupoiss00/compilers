@@ -4,6 +4,8 @@
 
 #include "ReadTable.h"
 #include "ReadGrammar.h"
+#include "PrintTable.h"
+#include "Analizator.h"
 
 using namespace std;
 
@@ -13,6 +15,7 @@ struct Args
 };
 
 optional<Args> ParseArgs(int argc, char* argv[]);
+void PrintGrammar(const std::vector<Rule>& grammar);
 
 int main(int argc, char* argv[])
 {
@@ -24,16 +27,57 @@ int main(int argc, char* argv[])
     }
 
     Table table = ReadTable(args->tableFileName);
+    PrintTestTable(table);
 
     ifstream grammarFile(args->grammarFileName);
     if (!grammarFile.is_open())
     {
-        cout << "Grammar file is not found: " << args->inputFileName << endl;
+        cout << "Grammar file is not found: " << args->grammarFileName << endl;
         return 1;
     }
 
     std::vector<Rule> grammar = ReadGrammar(grammarFile);
+    PrintGrammar(grammar);
 
+    ifstream inputFile(args->inputFileName);
+    if (!inputFile.is_open())
+    {
+        cout << "Input file is not found: " << args->inputFileName << endl;
+        return 1;
+    }
+
+    try
+    {
+        Analyze(table, grammar, inputFile);
+        cout << "OK!!!" << endl;
+    }
+    catch (const std::exception& e)
+    {
+        cout << "ERROR: " << e.what() << endl;
+    }
+
+
+    return 0;
+}
+
+optional<Args> ParseArgs(int argc, char* argv[])
+{
+    if (argc != 4)
+    {
+        cout << "Invalid quantity of arguments" << endl;
+        return nullopt;
+    }
+
+    Args args;
+    args.inputFileName = argv[1];
+    args.tableFileName = argv[2];
+    args.grammarFileName = argv[3];
+
+    return args;
+}
+
+void PrintGrammar(const std::vector<Rule>& grammar)
+{
     for (const Rule& rule : grammar)
     {
         cout << rule.nonTerminal << " -> ";
@@ -57,23 +101,4 @@ int main(int argc, char* argv[])
         }
         cout << endl;
     }
-
-
-    return 0;
-}
-
-optional<Args> ParseArgs(int argc, char* argv[])
-{
-    if (argc != 4)
-    {
-        cout << "Invalid quantity of arguments" << endl;
-        return nullopt;
-    }
-
-    Args args;
-    args.inputFileName = argv[1];
-    args.tableFileName = argv[2];
-    args.grammarFileName = argv[3];
-
-    return args;
 }
