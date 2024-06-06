@@ -27,9 +27,6 @@ std::set<std::string> GetAllSymbols(const std::vector<Rule>& grammar)
 	return symbols;
 }
 
-void AddDirectionSymbolsOfNonTerminal()
-{}
-
 void AddDirectionSymbols(TableStr& str, const std::vector<Symbol>& directionSymbols, const std::vector<Rule>& grammar)
 {
 	for (const Symbol& symbol : directionSymbols)
@@ -116,7 +113,7 @@ void AddInfoInString(TableStr& str, const std::vector<Symbol>& symbols, const st
 {
 	for (const Symbol& s : symbols)
 	{
-		if (!s.numOfRule.has_value() || !s.numOfRightPart.has_value())
+		if (!s.numOfRule.has_value() || !s.numOfRightPart.has_value() || s.name == END_SYMBOL)
 		{
 			continue;
 		}
@@ -175,6 +172,14 @@ Table CreateTable(const std::vector<Rule>& grammar)
 	for (size_t i = 1; i < grammar.size(); i++)
 	{
 		const Rule& r = grammar[i];
+		if (r.rightPart.size() == 1 && r.rightPart[0] == END_SYMBOL)
+		{
+			Symbol endSymbol;
+			endSymbol.name = END_SYMBOL_IN_TABLE;
+			endSymbol.numOfRule = i;
+			firstStr.nextSymbols[END_SYMBOL].push_back(endSymbol);
+			continue;
+		}
 		if (r.nonTerminal == symbolOfFirstStr.name)
 		{
 			AddDirectionSymbols(firstStr, r.directionSymbols, grammar);

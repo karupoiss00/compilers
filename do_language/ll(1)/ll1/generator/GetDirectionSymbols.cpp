@@ -93,7 +93,6 @@ std::set<std::string> GetDirectionSymbolsIfNonterminalInEnd(const Rule& rule, co
         {
             std::set<std::string> symbols = GetDirectionSymbolsAfterNonTerminal(r, rule.nonTerminal, rules);
             directionSymbols.insert(symbols.begin(), symbols.end());
-            continue;
         }
     }
     return directionSymbols;
@@ -111,7 +110,6 @@ void DefineDirectionSymbols(std::vector<Rule>& rules)
         }
         if (rule.rightPart.size() == 1 && rule.rightPart[0] == EMPTY_SYMBOL)
         {
-            //TODO: просмотреть потом
             std::set<std::string> directionSymbols = DefineDirectionSymbolsAfterNonTerminal(rule.nonTerminal, rules);
             size_t sizeBefore = rule.directionSymbols.size();
             rule.directionSymbols.insert(directionSymbols.begin(), directionSymbols.end());

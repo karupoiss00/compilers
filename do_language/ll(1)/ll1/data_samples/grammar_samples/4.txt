@@ -1,0 +1,18 @@
+A -> a B
+A -> a C
+A -> d
+B -> b C
+B -> b D
+B -> a
+C -> a
+C -> b
+D -> d
+D -> d E
+D -> d F
+D -> g
+E -> a b c
+E -> a b
+E -> a b c d
+E -> x y z
+F -> f g h
+F -> i j k

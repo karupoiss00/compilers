@@ -41,13 +41,13 @@ std::vector<Rule> GetRulesWithNonterminal(const std::vector<Rule>& rules, const 
 	return neededRules;
 }
 
-std::vector<Rule> GetRulesOfNonterminal(const std::vector<Rule>& rules, const std::string& nonTerminal)
+std::vector<Rule> GetNonterminalRules(const std::vector<Rule>& rules, const std::string& nonTerminal)
 {
 	std::vector<Rule> neededRules;
 
 	for (const Rule& rule : rules)
 	{
-		if (nonTerminal == rule.nonTerminal)
+		if (rule.nonTerminal == nonTerminal)
 		{
 			neededRules.push_back(Rule(rule));
 		}
