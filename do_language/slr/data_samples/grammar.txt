@@ -1,8 +1,5 @@
-S -> E #
-E -> E + T
-E -> T
-T -> T * F
-T -> F
-F -> - F
-F -> ( E )
-F -> id
+Z -> S #
+S -> b B S
+S -> e
+B -> a B
+B -> e

@@ -9,16 +9,17 @@ const std::string END_SYMBOL = "#";
 
 struct Rule
 {
-    std::string nonTerminal;
-    std::vector<std::string> rightPart;
-    std::set<std::string> directionSymbols;
+    std::string nonTerminal; /*Имя нетерминала*/
+    std::vector<std::string> rightPart; /*Части правила*/
+    std::set<std::string> directionSymbols; /*Направляющие символы*/
     bool hasEnd = false;
 
     bool operator==(const Rule& other)
     {
         return this->nonTerminal == other.nonTerminal
             && this->rightPart == other.rightPart
-            && this->directionSymbols == other.directionSymbols;
+            && this->directionSymbols == other.directionSymbols
+            && this->hasEnd == hasEnd;
     }
 };
 
